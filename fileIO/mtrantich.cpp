@@ -1,10 +1,10 @@
-//Giair thích xem trên chương trình C bên trên
 #include <bits/stdc++.h>
 using namespace std;
- 
-void intput(int n, int m, int a[][100]);
+
+void input(int n, int m, int a[][100]);
 void output(int n, int m, int a[][100]);
 void tichMaTran(int a[][100], int b[][100], int m, int n, int m1);
+void swapRow(int a[][100], int aRow, int aCol, int row1, int row2);
 
 int main()
 {
@@ -13,14 +13,14 @@ int main()
     cin>>n>>m;
     int a[100][100];
     cout<<"\n------Nhap phan tu ma tran A-----\n";
-    intput(n, m, a);
+    input(n, m, a);
      
     int n1, m1;
     cout<<"MA TRAN B:\nNhap so hang, so cot lan luot: ";
     cin>>n1>>m1;
     int b[100][100];
     cout<<"\n------Nhap phan tu ma tran B-----\n";
-    intput(n1, m1, b);
+    input(n1, m1, b);
  
      
     cout<<"\n------MA TRAN A-----\n";
@@ -35,7 +35,7 @@ int main()
     }
     return 0;
 }
-void intput(int n, int m, int a[][100]){
+void input(int n, int m, int a[][100]){
     int i,j;
     for(i=0;i<n;i++){
         for(j=0;j<m;j++) {
@@ -69,4 +69,23 @@ void tichMaTran(int a[][100], int b[][100], int m, int n, int m1){
     cout<<"\nTICH 2 MA TRAN A B\n";
     output(n,m1,c);
 }
+
+void swapRow(int a[][100], int aRow, int aCol, int row1, int row2)
+{
+    int iaRow, iaCol;
+    int tmp;
  
+    if (row1 < 0 || row1 >= aRow ||
+        row2 < 0 || row2 >= aRow ||
+        row1 == row2)
+    {
+        return;
+    }
+ 
+    for (iaCol = 0; iaCol < aCol; iaCol++)
+    {
+        tmp = a[row1][iaCol];
+        a[row1][iaCol] = a[row2][iaCol];
+        a[row2][iaCol] = tmp;
+    }
+}
