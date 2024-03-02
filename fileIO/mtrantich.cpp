@@ -70,6 +70,7 @@ void tichMaTran(int a[][100], int b[][100], int m, int n, int m1){
     output(n,m1,c);
 }
 
+
 void swapRow(int a[][100], int aRow, int aCol, int row1, int row2)
 {
     int iaRow, iaCol;
