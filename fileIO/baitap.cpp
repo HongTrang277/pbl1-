@@ -121,7 +121,7 @@ void printMatrix(float matrix[MAX][MAX], int size)
 	}
 }
 
-void saveMatrixToFile(float matrix[][MAX], int n, string filename) 
+void saveMatrixToFile(float matrix[][MAX], int size, string filename) 
 {
     ofstream file(filename);
     if (!file.is_open()) 
@@ -131,10 +131,10 @@ void saveMatrixToFile(float matrix[][MAX], int n, string filename)
     } 
 	else 
 	{
-		file << n << endl;
-		for (int i = 0; i < n; ++i) 
+		file << size << endl;
+		for (int i = 0; i < size; ++i) 
 		{
-        	for (int j = 0; j < n; ++j) 
+        	for (int j = 0; j < size; ++j) 
             file << matrix[i][j] << " ";
         file << endl;
     	}
