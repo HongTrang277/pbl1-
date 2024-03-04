@@ -14,7 +14,7 @@ Chương trình cần có các hàm sau:
 
 ******************************/
 
-#include <bits/stdc++.h>
+#include <iostream> 
 #include <fstream>
 using namespace std;
 
@@ -29,34 +29,37 @@ void swapCols(float matrix[][MAX], int aRow, int aCol, int row1, int row2);
 
 int main()
 {
-	int rows1, cols1;
-	int rows2, cols2;
-
+	int n;
+	cin>>n;
 	string fileName1,fileName2;
 
 	float matrix1[MAX][MAX];
 	float matrix2[MAX][MAX];
+	float result1[MAX][MAX]; // ma trận tổng
+	float result2[MAX][MAX]; // ma trận tích
+	float result3[MAX][MAX]; // ma trận đổi cột của ma trận tích
 	
 	cout << "Nhập tên file chứa ma trận 1: ";
 	getline(cin, fileName1);
 	cout << "Nhập tên file chứa ma trận 2: ";
 	getline(cin, fileName2);	
 
-	readMatrixFromFile(fileName1, matrix1, rows1, cols1);
-	readMatrixFromFile(fileName2, matrix2, rows2, cols2);
+	readMatrixFromFile(fileName1, matrix1, n);
+	readMatrixFromFile(fileName2, matrix2, n);
 
+	
 
 }
 
-void readMatrixFromFile(string filename, float matrix[MAX][MAX], int rows, int cols) 
+void readMatrixFromFile(string filename, float matrix[MAX][MAX], int n) 
 {
 	ifstream file(filename);
 	if(file.is_open()) 
 	{
-		file >> rows >>cols;
-		for(int i=0; i<rows; i++) 
+		file >> n;
+		for(int i=0; i<n; i++) 
 		{
-			for(int j=0; j<cols; j++) 
+			for(int j=0; j<n; j++) 
 				file >> matrix[i][j];
 		}
 	}
@@ -64,17 +67,17 @@ void readMatrixFromFile(string filename, float matrix[MAX][MAX], int rows, int c
 }
 
 
-void printMatrix(float matrix[MAX][MAX], int rows, int cols) 
+void printMatrix(float matrix[MAX][MAX], int n) 
 {
-	for (int i=0; i<rows; i++) 
+	for (int i=0; i<n; i++) 
 	{
-		for(int j=0; j<cols; j++) 
+		for(int j=0; j<n; j++) 
 			cout<< matrix[i][j] << " ";
 		cout<<endl;
 	}
 }
 
-void saveMatrixToFile(int matrix[][MAX], int rows, int cols, string filename) 
+void saveMatrixToFile(int matrix[][MAX], int n, string filename) 
 {
     ofstream file(filename);
     if (!file.is_open()) 
@@ -84,10 +87,10 @@ void saveMatrixToFile(int matrix[][MAX], int rows, int cols, string filename)
     } 
 	else 
 	{
-		file << rows << " " << cols << endl;
-		for (int i = 0; i < rows; ++i) 
+		file << n << endl;
+		for (int i = 0; i < n; ++i) 
 		{
-        	for (int j = 0; j < cols; ++j) 
+        	for (int j = 0; j < n; ++j) 
             file << matrix[i][j] << " ";
         file << endl;
     	}
@@ -111,21 +114,20 @@ void multiplyMatrix(float matrix[][MAX], float matrix2[][MAX], int n,int m, int 
 	}
 }
 
-void sumMatrix( float matrix[][MAX], float matrix2[][MAX], int m, int m1) 
+void sumMatrix( float matrix[][MAX], float matrix2[][MAX], int n, float result[][100]) 
 {
-    float tempmatrix[MAX][MAX];
 	int i, j, k;
-	for(int i=0; i<m; i++) 
+	for(int i=0; i<n; i++) 
 	{
-		for(int j=0; j<m; j++) 
-			tempmatrix[i][j]=matrix[i][j]+matrix2[i][j];
+		for(int j=0; j<n; j++) 
+			result[i][j]=matrix[i][j]+matrix2[i][j];
 	}
 }
 
-void swapCols(float matrix[][MAX], int aRow, int aCol, int col1, int col2)
+void swapCols(float matrix[][MAX], int aRow, int aCol, int col1, int col2,)
 {
     int iaRow, iaCol;
-    int tmp;
+    float tmp;
 	
     if (col1 < 0 || col1 >= aCol ||
         col2 < 0 || col2 >= aCol ||
