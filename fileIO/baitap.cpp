@@ -25,7 +25,7 @@ void printMatrix(float matrix[MAX][MAX], int size);
 void saveMatrixToFile(float result1[][MAX], float result2[][MAX], int size, int col1, int col2, string filename);
 void multiplyMatrix(float matrix[][MAX], float matrix2[][MAX], int size, float result[][MAX]);
 void sumMatrix ( float matrix1[][MAX], float matrix2[][MAX], int size , float result[][MAX]);
-void swapCols(float matrix[][MAX], int size, int col1, int col2);
+void PermuteCol(float matrix[][MAX], int size, int col1, int col2);
 
 int main()
 {
@@ -153,7 +153,7 @@ void saveMatrixToFile(float result1[][MAX],float result2[][MAX], int size, int c
             file << result2[i][j] << " ";
         file << endl;
     	}
-        swapCols(result2, size, col1, col2);
+        PermuteCol(result2, size, col1, col2);
         file << "Ma trận tích đã đổi chỗ cột p và q:" << endl;
 		for (int i = 0; i < size; ++i) 
 		{
@@ -188,11 +188,11 @@ void sumMatrix( float matrix1[][MAX], float matrix2[][MAX], int size, float resu
 	}
 }
 
-void swapCols(float matrix[][MAX], int size, int col1, int col2)
+void PermuteCol(float matrix[][MAX], int size, int col1, int col2)
 {
-    int iaRow, iaCol;
-    float tmp;
-	
+    int iARow, iACol;
+    int tmp;
+ 
     if (col1 < 0 || col1 >= size ||
         col2 < 0 || col2 >= size ||
         col1 == col2)
@@ -200,13 +200,12 @@ void swapCols(float matrix[][MAX], int size, int col1, int col2)
         return;
     }
  
-    for (iaRow = 0; iaRow < size; iaRow++)
+    // Sweep according to row
+    for (iARow = 0; iARow < size; iARow++)
     {
-		//đổi chỗ 2 phần tử cùng cột khác dòng
-        tmp = matrix[iaRow][col1];
-        matrix[iaRow][col1] = matrix[iaRow][col2];
-        matrix[iaRow][col2] = tmp;
+        tmp = matrix[iARow][col1];
+        matrix[iARow][col1] = matrix[iARow][col2];
+        matrix[iARow][col2] = tmp;
     }
 }
-
 
