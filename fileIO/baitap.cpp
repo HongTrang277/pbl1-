@@ -22,8 +22,8 @@ using namespace std;
 
 bool matrix_reader(string file, float matrix[][MAX], int &size);
 void printMatrix(float matrix[MAX][MAX], int size);
-void saveMatrixToFile(float matrix[][MAX], int size, string filename);
-void multiplyMatrix(float matrix[][MAX], float matrix2[][MAX], int size);
+void saveMatrixToFile(float result1[][MAX], float result2[][MAX], int size, int col1, int col2, string filename);
+void multiplyMatrix(float matrix[][MAX], float matrix2[][MAX], int size, float result[][MAX]);
 void sumMatrix ( float matrix1[][MAX], float matrix2[][MAX], int size , float result[][MAX]);
 void swapCols(float matrix[][MAX], int size, int col1, int col2);
 
@@ -50,7 +50,15 @@ int main()
 			return 0; 
 		}
 		int size=size1;
-		//code chính
+        int p, q;
+        cout << "Nhập cột p và q của ma trận tích mà bạn muốn đổi chỗ:";
+        cin >> p; cin >> q;
+		sumMatrix(matrix1, matrix2, size, result1);
+        printMatrix(result1, size);
+        multiplyMatrix(matrix1, matrix2, size, result2);
+        printMatrix(result2, size);
+        saveMatrixToFile(result1, result2, size, p, q, "file_3.txt");
+        printMatrix(result2, size);
     }
     else 
     {
@@ -121,7 +129,7 @@ void printMatrix(float matrix[MAX][MAX], int size)
 	}
 }
 
-void saveMatrixToFile(float matrix[][MAX], int size, string filename) 
+void saveMatrixToFile(float result1[][MAX],float result2[][MAX], int size, int col1, int col2, string filename) 
 {
     ofstream file(filename);
     if (!file.is_open()) 
@@ -131,31 +139,43 @@ void saveMatrixToFile(float matrix[][MAX], int size, string filename)
     } 
 	else 
 	{
-		file << size << endl;
+		file << "Ma trận tổng:" << endl;
 		for (int i = 0; i < size; ++i) 
 		{
         	for (int j = 0; j < size; ++j) 
-            file << matrix[i][j] << " ";
+            file << result1[i][j] << " ";
+        file << endl;
+    	}
+        file << "Ma trận tích:" << endl;
+		for (int i = 0; i < size; ++i) 
+		{
+        	for (int j = 0; j < size; ++j) 
+            file << result2[i][j] << " ";
+        file << endl;
+    	}
+        swapCols(result2, size, col1, col2);
+        file << "Ma trận tích đã đổi chỗ cột p và q:" << endl;
+		for (int i = 0; i < size; ++i) 
+		{
+        	for (int j = 0; j < size; ++j) 
+            file << result2[i][j] << " ";
         file << endl;
     	}
     file.close();
 	}
 }
 
-void multiplyMatrix(float matrix[][MAX], float matrix2[][MAX], int size)
+void multiplyMatrix(float matrix1[][MAX], float matrix2[][MAX], int size, float result[][MAX]) 
 {
-	float tempmatrix[MAX][MAX];
-	int i, j, k;
-	for(int i=0; i<size; i++) 
-	{
-		for(int j=0; j<size; j++) 
-		{
-			int tt=0;
-			for(int k=0; k<size; k++) 
-				tt=matrix[i][k]*matrix2[k][i]; 
-			tempmatrix[i][j]= tt;
-		}
-	}
+    for (int i = 0; i < size; ++i) 
+    {
+        for (int j = 0; j < size; ++j) 
+        {
+            result[i][j] = 0;
+            for (int k = 0; k < size; ++k)
+                result[i][j] += matrix1[i][k] * matrix2[k][j];
+        }
+    }
 }
 
 void sumMatrix( float matrix1[][MAX], float matrix2[][MAX], int size, float result[][MAX]) 
@@ -188,12 +208,5 @@ void swapCols(float matrix[][MAX], int size, int col1, int col2)
         matrix[iaRow][col2] = tmp;
     }
 }
-
-
-
-
-
-
-
 
 
