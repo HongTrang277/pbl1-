@@ -188,3 +188,12 @@ void swapCols(float matrix[][MAX], int size, int col1, int col2)
         matrix[iaRow][col2] = tmp;
     }
 }
+
+
+
+
+
+
+
+
+
