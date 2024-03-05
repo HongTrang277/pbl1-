@@ -54,10 +54,13 @@ int main()
         cout << "Nhập cột p và q của ma trận tích mà bạn muốn đổi chỗ:";
         cin >> p; cin >> q;
 		sumMatrix(matrix1, matrix2, size, result1);
+        cout << "Ma trận tổng" << endl;
         printMatrix(result1, size);
         multiplyMatrix(matrix1, matrix2, size, result2);
+        cout << "Ma trận tích" << endl;
         printMatrix(result2, size);
         saveMatrixToFile(result1, result2, size, p, q, "file_3.txt");
+        cout << "Ma trận tích đã đổi cột" << endl;
         printMatrix(result2, size);
     }
     else 
