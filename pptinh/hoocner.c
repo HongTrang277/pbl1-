@@ -1,10 +1,9 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <stdio.h>
 
 void nhapHeSo(float a[], int n) {
     for (int i = 0; i <= n; i++) {
-        cout << "Hệ số thứ " << i + 1 << " = ";
-        cin >> a[i];
+        printf("Hệ số thứ %d = ", i + 1);
+        scanf("%f", &a[i]);
     }
 }
 
@@ -16,10 +15,10 @@ void tinhHeSoMoi(float a[], int n, float c) {
 
 void inHeSo(float a[], int n, float c) 
 {
-    cout << "Các hệ số của p(y + " << fixed << c << ") lần lượt là:\n";
+    printf("Các hệ số của p(y + %.2f) lần lượt là:\n", c);
     for (int i = 0; i <= n; i++) 
     {
-        cout << "Hệ số bậc " << n - i << " = " << fixed << a[i] << "\n";
+        printf("Hệ số bậc %d = %.2f\n", n - i, a[i]);
     }
 }
 
@@ -27,11 +26,11 @@ int main() {
     int n;
     float c, a[10];
     
-    cout << "Nhập giá trị c cho trước: ";
-    cin >> c;
-    cout << "Nhập bậc giá trị đa thức: ";
-    cin >> n;
-    cout << "Nhập các hệ số: \n";
+    printf("Nhập giá trị c cho trước: ");
+    scanf("%f", &c);
+    printf("Nhập bậc giá trị đa thức: ");
+    scanf("%d", &n);
+    printf("Nhập các hệ số: \n");
     
     nhapHeSo(a, n);
     tinhHeSoMoi(a, n, c);
