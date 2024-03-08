@@ -14,35 +14,43 @@ Chương trình cần có các hàm sau:
 
 ******************************/
 
-#include <iostream> 
+#include <bits/stdc++.h> 
 #include <fstream>
 using namespace std;
 
-#define MAX 100
+#define MAX_SIZE 100
 
-bool matrix_reader(string file, float matrix[][MAX], int &size);
-void printMatrix(float matrix[MAX][MAX], int size);
-void saveMatrixToFile(float result1[][MAX], float result2[][MAX], int size, int col1, int col2, string filename);
-void multiplyMatrix(float matrix[][MAX], float matrix2[][MAX], int size, float result[][MAX]);
-void sumMatrix ( float matrix1[][MAX], float matrix2[][MAX], int size , float result[][MAX]);
-void PermuteCol(float matrix[][MAX], int size, int col1, int col2);
+int matrix_reader(string file, float matrix[][MAX_SIZE], int &size);
+void printMatrix(float matrix[MAX_SIZE][MAX_SIZE], int size);
+void saveMatrixToFile(float result1[][MAX_SIZE], float result2[][MAX_SIZE], int size, int col1, int col2, string filename);
+void multiplyMatrix(float matrix[][MAX_SIZE], float matrix2[][MAX_SIZE], int size, float result[][MAX_SIZE]);
+void sumMatrix ( float matrix1[][MAX_SIZE], float matrix2[][MAX_SIZE], int size , float result[][MAX_SIZE]);
+void PermuteCol(float matrix[][MAX_SIZE], int size, int col1, int col2);
 
 int main()
 {
 	int size1,size2;
 	string fileName1,fileName2;
 
-	float matrix1[MAX][MAX];
-	float matrix2[MAX][MAX];
-	float result1[MAX][MAX]; // ma trận tổng
-	float result2[MAX][MAX]; // ma trận tích
+	float matrix1[MAX_SIZE][MAX_SIZE];
+	float matrix2[MAX_SIZE][MAX_SIZE];
+	float result1[MAX_SIZE][MAX_SIZE]; // ma trận tổng
+	float result2[MAX_SIZE][MAX_SIZE]; // ma trận tích
 	
 	cout << "Nhập tên file chứa ma trận 1: ";
 	getline(cin, fileName1);
 	cout << "Nhập tên file chứa ma trận 2: ";
 	getline(cin, fileName2);
 
-	if(matrix_reader(fileName1, matrix1, size1) && matrix_reader(fileName2, matrix2, size2))
+    if (matrix_reader(fileName1, matrix1, size1) == 0 || matrix_reader(fileName2, matrix2, size2) == 0)
+    {
+        cout << "Không mở được file/file không tồn tại trong cùng folder";
+    }
+    if (matrix_reader(fileName1, matrix1, size1) == 1 || matrix_reader(fileName2, matrix2, size2) == 1)
+    {
+        cout << "Có ít nhất 1 ma trận không phải ma trận vuông";
+    }
+	if(matrix_reader(fileName1, matrix1, size1) == 2 && matrix_reader(fileName2, matrix2, size2) == 2)
     {
         if (size1!=size2)
 		{
@@ -51,7 +59,7 @@ int main()
 		}
 		int size=size1;
         int p, q;
-        cout << "Nhập cột p và q của ma trận tích mà bạn muốn đổi chỗ:";
+        cout << "Nhập cột p và q của ma trận tích mà bạn muốn đổi chỗ (p,q có giá trị từ 0 - " << size-1  << "): " ;
         cin >> p; cin >> q;
 		sumMatrix(matrix1, matrix2, size, result1);
         cout << "Ma trận tổng" << endl;
@@ -63,66 +71,57 @@ int main()
         cout << "Ma trận tích đã đổi cột" << endl;
         printMatrix(result2, size);
     }
-    else 
-    {
-        cout << "Không mở được file/file không tồn tại trong cùng folder";
-    }
 
 	return 0;
 }
 /*
     hàm này đọc ma trận từ file text
-    string file: đường dẫn file text
+    string file: tên file text tồn tại trong cùng folder
     int matrix[][]: Ma trận 2 chiều sẽ lưu ma trận đọc được, ma trận mặc định truyền theo tham chiếu
     int &size: Kích thước của ma trận, vì là ma trận vuông nên số hàng = số cột. 
     Dùng tham chiếu để biến trong hàm main cũng bị thay đổi
-
 */
-bool matrix_reader(string file, float matrix[][MAX], int &size)
+int matrix_reader(string file, float matrix[][MAX_SIZE], int &size)
 {
     size = -1; // Khởi tạo kích thước ma trận là -1. Tức là chưa biết kích thước
     ifstream whatToRead;
     whatToRead.open(file);
+    if (whatToRead.fail())
+        return 0;
     string line;
-    // Đọc lần lượt từng dòng 
-    int rows, cols; // Khai báo chỉ số hàng, cột
-    // Vòng for này sẽ tăng dần chỉ số hàng
+    int rows, cols;
     for(rows = 0; getline( whatToRead, line ); ++rows)
     {
         string element = "";
-        cols = 0; // Bắt đầu mỗi hàng, cho chỉ số cột khởi tạo = 0
+        cols = 0;
         for(int t = 0; t < line.length(); ++t)
         {
             if(line[t] != ' ')
             {
-                // Nếu ký tự hiện tại khác dấu cách => nối vào biến element
                 element += line[t];
             }
-            // Nếu ký tự hiện tại là dấu cách, hoặc là ký tự cuối của hàng
             if(line[t] == ' ' || t == line.length() - 1)
             {
-                // Thực hiện chuyển string thành số int dùng hàm atoi
                 // Hàm atoi nhận vào biến kiểu char*, nên cần dùng .c_str() để chuyển từ string về char*
                 matrix[rows][cols] = atoi(element.c_str());
-                // Tăng chỉ số cột
                 cols++;
                 // Đặt lại giá trị element
                 element = ""; 
             }
         }
         // Nếu chưa gán giá trị kích thước ma trận thì gán trước.
-        // Hiểu luôn là nó lấy số phần tử của hàng đầu tiên làm giá trị khởi tạo cho kích thước ma trận
+        // lấy số phần tử của hàng đầu tiên làm giá trị khởi tạo cho kích thước ma trận
         if(size == -1) size = cols;
         // Nếu số cột của một hàng bất kỳ khác kích thước => ko phải ma trận vuông
-        if(size != cols) return false;
+        if(size != cols) return 1;
     }
     // Nếu số hàng của ma trận khác kích thước => ko phải ma trận vuông
-    if(size != rows) return false;
+    if(size != rows) return 1;
     whatToRead.close();
-    return true;
+    return 2;
 }
 
-void printMatrix(float matrix[MAX][MAX], int size) 
+void printMatrix(float matrix[MAX_SIZE][MAX_SIZE], int size) 
 {
 	for (int i=0; i<size; i++) 
 	{
@@ -132,7 +131,7 @@ void printMatrix(float matrix[MAX][MAX], int size)
 	}
 }
 
-void saveMatrixToFile(float result1[][MAX],float result2[][MAX], int size, int col1, int col2, string filename) 
+void saveMatrixToFile(float result1[][MAX_SIZE],float result2[][MAX_SIZE], int size, int col1, int col2, string filename) 
 {
     ofstream file(filename);
     if (!file.is_open()) 
@@ -168,7 +167,7 @@ void saveMatrixToFile(float result1[][MAX],float result2[][MAX], int size, int c
 	}
 }
 
-void multiplyMatrix(float matrix1[][MAX], float matrix2[][MAX], int size, float result[][MAX]) 
+void multiplyMatrix(float matrix1[][MAX_SIZE], float matrix2[][MAX_SIZE], int size, float result[][MAX_SIZE]) 
 {
     for (int i = 0; i < size; ++i) 
     {
@@ -181,7 +180,7 @@ void multiplyMatrix(float matrix1[][MAX], float matrix2[][MAX], int size, float 
     }
 }
 
-void sumMatrix( float matrix1[][MAX], float matrix2[][MAX], int size, float result[][MAX]) 
+void sumMatrix( float matrix1[][MAX_SIZE], float matrix2[][MAX_SIZE], int size, float result[][MAX_SIZE]) 
 {
 	int i, j, k;
 	for(int i=0; i<size; i++) 
@@ -191,7 +190,7 @@ void sumMatrix( float matrix1[][MAX], float matrix2[][MAX], int size, float resu
 	}
 }
 
-void PermuteCol(float matrix[][MAX], int size, int col1, int col2)
+void PermuteCol(float matrix[][MAX_SIZE], int size, int col1, int col2)
 {
     int iARow, iACol;
     int tmp;
@@ -203,7 +202,7 @@ void PermuteCol(float matrix[][MAX], int size, int col1, int col2)
         return;
     }
  
-    // Sweep according to row
+    // Duyệt theo hàng
     for (iARow = 0; iARow < size; iARow++)
     {
         tmp = matrix[iARow][col1];
