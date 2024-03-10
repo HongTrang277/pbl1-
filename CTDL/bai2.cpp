@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+
 const int MAX_SIZE = 100;
 using namespace std;
 
@@ -55,6 +56,13 @@ Student find(StudentList L, unsigned long ID)
     return NULL;
 }
 
+
+// int Empty_List(StudentList L)
+// {
+//     return (L->Next==NULL);
+// }
+
+
 int main()
 {
     StudentList Class13;
@@ -73,14 +81,15 @@ int main()
 
     insert(Class13,std1);
     insert(Class13,std2);
-    insert(Class13,std2);
+    insert(Class13,std3);
 
     display(Class13);
 
-    Student std3 = find(Class13, 2023);
+    std3 = find(Class13, 200303);
     if (std3 !=NULL)
         {
-        cout << "*** Found! ***";
+        cout << "*** Found! ***" << endl;
+        cout << std3->name;
         }
     else 
         cout << "*** Error 404 ***";
