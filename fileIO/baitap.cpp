@@ -39,17 +39,33 @@ int main()
 	
 	cout << "Nhập tên file chứa ma trận 1: ";
 	getline(cin, fileName1);
+
+    if (matrix_reader(fileName1, matrix1, size1) == 0 )
+    {
+        cout << "Không mở được file/file không tồn tại trong cùng folder" << endl;
+    }
+    if (matrix_reader(fileName1, matrix1, size1) == 1 )
+    {
+        cout << "Không phải ma trận vuông" << endl;
+    }
+
 	cout << "Nhập tên file chứa ma trận 2: ";
 	getline(cin, fileName2);
 
-    if (matrix_reader(fileName1, matrix1, size1) == 0 || matrix_reader(fileName2, matrix2, size2) == 0)
+    if (matrix_reader(fileName2, matrix2, size2) == 0)
     {
-        cout << "Không mở được file/file không tồn tại trong cùng folder";
+        cout << "Không mở được file/file không tồn tại trong cùng folder" << endl;
     }
-    if (matrix_reader(fileName1, matrix1, size1) == 1 || matrix_reader(fileName2, matrix2, size2) == 1)
+    if (matrix_reader(fileName2, matrix2, size2) == 1)
     {
-        cout << "Có ít nhất 1 ma trận không phải ma trận vuông";
+        cout << "Không phải ma trận vuông" << endl;
     }
+
+    if(matrix_reader(fileName1, matrix1, size1) != 2 || matrix_reader(fileName2, matrix2, size2) != 2)
+    {
+        cout << "Thiếu ma trận đầu vào, chương trình kết thúc" << endl;
+    }
+    
 	if(matrix_reader(fileName1, matrix1, size1) == 2 && matrix_reader(fileName2, matrix2, size2) == 2)
     {
         if (size1!=size2)
