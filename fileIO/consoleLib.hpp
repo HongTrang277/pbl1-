@@ -5,14 +5,15 @@ using namespace std;
 float console() {
     float choose;
     do {
-        cout << << endl << "============== WORD  -  GAME ==============" << endl;
-        cout << "|   1. Input matrix manually                 |" << endl;
-        cout << "|   2. Read matrix from file                 |" << endl;
-        cout << "|   3. Matrices addition                     |" << endl;
-        cout << "|   4. Matrices multiplication               |" << endl;
-        cout << "|   5. Permute 2 collumns of a matrix        |" << endl;
-        cout << "|   6. Close program                         |" << endl;
-        cout << "===========================================" << endl;
+        cout << endl;
+        cout << "=========== Simple matrix calculator ===========" << endl;
+        cout << "|   1. Input matrix manually                    |" << endl;
+        cout << "|   2. Read matrix from file                    |" << endl;
+        cout << "|   3. Matrices addition                        |" << endl;
+        cout << "|   4. Matrices multiplication                  |" << endl;
+        cout << "|   5. Permute 2 collumns of a matrix           |" << endl;
+        cout << "|   6. Close program                            |" << endl;
+        cout << "================================================" << endl;
         cout << "Choose your option: ";
         cin >> choose;
 
