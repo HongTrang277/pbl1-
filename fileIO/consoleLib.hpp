@@ -20,7 +20,7 @@ float console() {
         if (!((choose == static_cast<int>(choose)) && (choose <= 7 && choose >= 1))) 
         {
             clrscr;
-            cout << "\nFailed! Please choose again!" << endl;
+            cout << endl << "Invalid input!" << endl;
         } 
         else {
             break;
