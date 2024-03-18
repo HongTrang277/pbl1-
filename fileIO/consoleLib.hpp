@@ -29,6 +29,7 @@ float console() {
     return choose;
 }
 
+
 int main() {
     float userChoice = console();
     // Handle user choice based on the returned value
