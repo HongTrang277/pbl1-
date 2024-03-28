@@ -21,14 +21,14 @@ float console() {
     {
         cout << endl;
         cout << "=========== Simple matrix calculator ===========" << endl;
-        cout << "|   1. Input matrix manually                    |" << endl;
-        cout << "|   2. Read matrix from file                    |" << endl;
-        cout << "|   3. Matrices addition                        |" << endl;
-        cout << "|   4. Matrices multiplication                  |" << endl;
-        cout << "|   5. Permute 2 collumns of result matrix      |" << endl;
-        cout << "|   6. Save result to file                      |" << endl;
-        cout << "|   7. Print matrix to terminal                 |" << endl;
-        cout << "|   8. Close program                            |" << endl;
+        cout << "|   1. Input matrix manually                   |" << endl;
+        cout << "|   2. Read matrix from file                   |" << endl;
+        cout << "|   3. Matrices addition                       |" << endl;
+        cout << "|   4. Matrices multiplication                 |" << endl;
+        cout << "|   5. Permute 2 collumns of result matrix     |" << endl;
+        cout << "|   6. Save result to file                     |" << endl;
+        cout << "|   7. Print matrix to terminal                |" << endl;
+        cout << "|   8. Close program                           |" << endl;
         cout << "================================================" << endl;
         cout << "Choose your option: ";
         cin >> choose;
@@ -121,14 +121,17 @@ void saveMatrixToFile(float result[][MAX_SIZE], int size, string filename, int p
             case 0:
             {
                 file << endl << "Multiplication matrix  :" << endl;
+                break;
             }
             case 1:
             {
                 file << endl << "Summation matrix:" << endl;
+                break;            
             }
             case 2:
             {
                 file << endl << "Previous result matrix that has permute collumn " << col1 << " and " << col2 << ":" << endl;
+                break;            
             }
         }
 		for (int i = 0; i < size; ++i) 
@@ -208,27 +211,22 @@ void PermuteCol(float matrix[][MAX_SIZE], int size, int col1, int col2, int &pre
 }
 
 
-/*
-Hàm này mục đích là để lưu các ma trận theo tuần tự, nhập ma trận vào thì sẽ lưu tạm vào ma trận matrix
-Sau đó nếu ma trận hợp lệ, chuẩn ma trận vuông thì sẽ lưu matrix->matrix2, lúc này matrix1 sẽ rỗng
-Ma trận mới cũng sẽ lưu vào matrix, sau đó nếu chuẩn thì sẽ lưu 
-*/
 void dynamicallySavedMatrices(float matrix1[][MAX_SIZE],int &size1,float matrix2[][MAX_SIZE],int &size2,float matrix[][MAX_SIZE],int size)
 {
     int i, j;
-    size1= size2;
     if (matrix1[0][0] != (float)TRASHVALUE)
 	{
-        for(i=0; i<size1; i++) 
+        size2= size1;
+        for(i=0; i<size2; i++) 
         {
-            for(j=0; j<size1; j++) 
-                matrix1[i][j] = matrix2[i][j];
+            for(j=0; j<size2; j++) 
+                matrix2[i][j] = matrix1[i][j];
         }
     }
-    size2= size;
-	for(i=0; i<size2; i++) 
+    size1= size;
+	for(i=0; i<size1; i++) 
 	{
-		for(j=0; j<size2; j++) 
-			matrix2[i][j] = matrix[i][j];
+		for(j=0; j<size1; j++) 
+			matrix1[i][j] = matrix[i][j];
 	}
 }
