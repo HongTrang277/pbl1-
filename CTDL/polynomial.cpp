@@ -36,7 +36,25 @@ void display_polynomial(POLYNOMIAL poly)
     {
         if (poly->coeff_array[i]==0)
             continue;
-        cout << poly->coeff_array[i] << "^" << i << " ";
+        if (poly->coeff_array[i]>0)
+        {
+            if (i!= poly->high_power) 
+            {
+                cout << " + ";
+            }
+        }
+        else
+        {   if (i!= poly->high_power)
+                cout << " - ";
+            else 
+                cout << "-";
+        }
+        if (abs(poly->coeff_array[i] )!=1)
+            cout << abs(poly->coeff_array[i]);
+        if (i!=0)
+            cout<< "x";
+        if (i > 1)
+            cout << "^" << i;
     }
     cout << endl;
 }
@@ -69,11 +87,13 @@ int main()
     poly2->coeff_array[1]= -3;
     poly2->coeff_array[2]= 5;
 
+    display_polynomial(poly1);
+    display_polynomial(poly2);
     SUM(poly1, poly2, poly_sum);
     mult_polynomial(poly1, poly2, poly_prod);
     cout << "SUM:";
-
     display_polynomial(poly_sum);
+    cout << "multi: ";
     display_polynomial(poly_prod);
     return 0;
 }
