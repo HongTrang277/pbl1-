@@ -329,7 +329,8 @@ int matrix_reader(string file, float matrix[][MAX_SIZE], int &size)
 
 void saveMatrixToFile(float result[][MAX_SIZE], int size, string filename, int preChoice, int col1, int col2) 
 {
-    ofstream file(filename);
+    ofstream file;
+    file.open(filename, ios :: out | ios :: app);;
     if (!file.is_open()) 
 	{
         cout << endl <<  "Không thể mở file để nhập kết quả" <<endl;

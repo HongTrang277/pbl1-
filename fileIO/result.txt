@@ -1,0 +1,15 @@
+
+Multiplication matrix  :
+      66      81      96
+      30      36      42
+     102     126     150
+
+Summation matrix:
+       5       7       9
+       5       7       9
+      14      16      18
+
+Previous result matrix that has permute collumn 0 and 2:
+       9       7       5
+       9       7       5
+      18      16      14
