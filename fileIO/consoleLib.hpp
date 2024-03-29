@@ -107,7 +107,7 @@ void Menu()
                 }
                 case 2:
                 {
-                    cout << endl << "Read matrix from file \"" << fileName << "\" succeed";
+                    cout << endl << "Read matrix from file \"" << fileName << "\" succeed" << endl;
                     dynamicallySavedMatrices(matrix1, size1, matrix2, size2, matrix, size);
                     break;
                 }
@@ -127,12 +127,12 @@ void Menu()
             {
                 if (size1 != size2)
                 {
-                    cout << "Matrices sizes are not the same";
+                    cout << "Matrices sizes are not the same" << endl;
                 }
                 else
                 {
                     sumMatrix(matrix1, matrix2, size1, result, preChoice);
-                    cout << "Finish calculation";
+                    cout << "Finish calculation" << endl;
                 }
             }
             nextstep = Continue();
@@ -148,12 +148,12 @@ void Menu()
             {
                 if (size1 != size2)
                 {
-                    cout << "Matrices sizes are not the same";
+                    cout << "Matrices sizes are not the same" << endl;
                 }
                 else
                 {
                     multiplyMatrix(matrix1, matrix2, size1, result, preChoice);
-                    cout << "Finish calculation!";
+                    cout << "Finish calculation!" << endl;
                 }
             }
             else
