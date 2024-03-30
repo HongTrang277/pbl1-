@@ -171,13 +171,18 @@ void Menu()
             {
                 cout << "Which collumns you want to permute:" << "(Enter number from 0 - "<< size-1 << ")" << endl;
                 cout << "Col 1: "; cin >> col1;
+                if (col1 < 0 || col1 > size-1)
+                    cout << "Invaliid collumn"; goto INVALID;
                 cout << "Col 2: "; cin >> col2;
+                if (col2 < 0 || col2 > size-1)
+                    cout << "Invaliid collumn"; goto INVALID;
                 PermuteCol(result, size1, col1, col2, preChoice);
                 cout << " Collumns permuted" << endl;
                 cin.ignore(1000 , '\n');
             }
             else
                 cout << "No calculation was made!" << endl;
+            INVALID:
             nextstep = Continue();
             if (nextstep == 1) goto PERMUTECOLS;
             if (nextstep == 2) goto MENU;
@@ -268,7 +273,7 @@ void Menu()
 }
 
 int Continue() {
-	cout << endl << "Press y to continue input!" << endl << "Press b to back to menu!" ;
+	cout << endl << "Press y to repeat step!" << endl << "Press b to back to menu!" ;
     cout << endl << "Press any key to exit program!" << endl << "Input: ";
 	char input;
     input = getchar();
