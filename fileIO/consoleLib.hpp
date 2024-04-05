@@ -6,6 +6,8 @@
 
 using namespace std;
 
+bool is_Vietnamese = true;
+
 int matrix_reader(string file, float matrix[][MAX_SIZE], int &size);
 void multiplyMatrix(float matrix1[][MAX_SIZE], float matrix2[][MAX_SIZE], int size, float result[][MAX_SIZE], int &preChoice);
 void sumMatrix ( float matrix1[][MAX_SIZE], float matrix2[][MAX_SIZE], int size , float result[][MAX_SIZE], int &preChoice);
@@ -68,6 +70,18 @@ void Menu()
     int nextstep, preChoice= -1;
     //preChoice =-1 là trước đó không có phép tính hay kết quả nào để lưu vào file
 
+    /*
+    cout << "=====Chọn ngôn ngữ/Choose language=====" << endl;
+    cout << "|       1 . Tiếng Việt                |" << endl;
+    cout << "|       2 . English                   |" << endl;
+    cout << "=======================================" << endl;
+
+    cout << "Nhập lựa chọn // Input choice :"; cin >> userChoice;
+    cin.ignore(1000 , '\n');
+    if (userChoice == 1) goto MENU:
+    is_Vietnamese = !is_Vietnamese;
+    */
+
     MENU: 
 	system("cls");             
 	userChoice = console();
@@ -107,7 +121,7 @@ void Menu()
                 }
                 case 2:
                 {
-                    cout << endl << "Read matrix from file \"" << fileName << "\" succeed";
+                    cout << endl << "Read matrix from file \"" << fileName << "\" succeed" << endl;
                     dynamicallySavedMatrices(matrix1, size1, matrix2, size2, matrix, size);
                     break;
                 }
@@ -127,12 +141,12 @@ void Menu()
             {
                 if (size1 != size2)
                 {
-                    cout << "Matrices sizes are not the same";
+                    cout << "Matrices sizes are not the same" << endl;
                 }
                 else
                 {
                     sumMatrix(matrix1, matrix2, size1, result, preChoice);
-                    cout << "Finish calculation";
+                    cout << "Finish calculation" << endl;
                 }
             }
             nextstep = Continue();
@@ -148,12 +162,12 @@ void Menu()
             {
                 if (size1 != size2)
                 {
-                    cout << "Matrices sizes are not the same";
+                    cout << "Matrices sizes are not the same" << endl;
                 }
                 else
                 {
                     multiplyMatrix(matrix1, matrix2, size1, result, preChoice);
-                    cout << "Finish calculation!";
+                    cout << "Finish calculation!" << endl;
                 }
             }
             else
@@ -171,13 +185,24 @@ void Menu()
             {
                 cout << "Which collumns you want to permute:" << "(Enter number from 0 - "<< size-1 << ")" << endl;
                 cout << "Col 1: "; cin >> col1;
+                if (col1 < 0 || col1 > size-1)
+                { 
+                    cout << "Invalid collumn" << endl; 
+                    goto INVALID;
+                }
                 cout << "Col 2: "; cin >> col2;
+                if (col2 < 0 || col2 > size-1)
+                { 
+                    cout << "Invalid collumn" << endl; 
+                    goto INVALID;
+                }
                 PermuteCol(result, size1, col1, col2, preChoice);
                 cout << " Collumns permuted" << endl;
                 cin.ignore(1000 , '\n');
             }
             else
                 cout << "No calculation was made!" << endl;
+            INVALID:
             nextstep = Continue();
             if (nextstep == 1) goto PERMUTECOLS;
             if (nextstep == 2) goto MENU;
@@ -268,7 +293,7 @@ void Menu()
 }
 
 int Continue() {
-	cout << endl << "Press y to continue input!" << endl << "Press b to back to menu!" ;
+	cout << endl << "Press y to repeat step!" << endl << "Press b to back to menu!" ;
     cout << endl << "Press any key to exit program!" << endl << "Input: ";
 	char input;
     input = getchar();
@@ -329,7 +354,8 @@ int matrix_reader(string file, float matrix[][MAX_SIZE], int &size)
 
 void saveMatrixToFile(float result[][MAX_SIZE], int size, string filename, int preChoice, int col1, int col2) 
 {
-    ofstream file(filename);
+    ofstream file;
+    file.open(filename, ios :: out | ios :: app);;
     if (!file.is_open()) 
 	{
         cout << endl <<  "Không thể mở file để nhập kết quả" <<endl;
