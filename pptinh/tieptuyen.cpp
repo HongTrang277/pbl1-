@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <math.h>
+#include <bits/stdc++.h>
+using namespace std;
 
 #define e 0.001
 

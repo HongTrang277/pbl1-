@@ -1,19 +1,12 @@
 #include <bits/stdc++.h>
 #include <fstream>
-
-#define MAX_SIZE 100
-#define TRASHVALUE 12345.6789
+#include "PBLcalculation.hpp"
+#include "PBLmatrix&file.hpp"
 
 using namespace std;
 
 bool is_Vietnamese = true;
 
-int matrix_reader(string file, float matrix[][MAX_SIZE], int &size);
-void inputMatrixManually(float matrix[][MAX_SIZE], int &size);
-void PermuteCol(float matrix[][MAX_SIZE], int size, int col1, int col2, int &preChoice);
-void printMatrix(float matrix[MAX_SIZE][MAX_SIZE], int size);
-void saveMatrixToFile(float result[][MAX_SIZE], int size, string filename, int preChoice, int col1, int col2);
-void dynamicallySavedMatrices(float matrix1[][MAX_SIZE],int &size1,float matrix2[][MAX_SIZE],int &size2,float matrix[][MAX_SIZE],int size);
 int Continue();
 void Menu();
 
@@ -26,7 +19,7 @@ float console() {
         cout << "|   1. Input matrix manually                   |" << endl;
         cout << "|   2. Read matrix from file                   |" << endl;
         cout << "|   3. Turn into upper triangle matrix         |" << endl;
-        cout << "|   4. Print polinomial p(x) to terminal       |" << endl;
+        cout << "|   4. Print polynomial p(x) to terminal       |" << endl;
         cout << "|   5. Calculate q(x)= SUM(p(xi))              |" << endl;
         cout << "|   6. Save result to file                     |" << endl;
         cout << "|   7. Print matrix to terminal                |" << endl;
@@ -131,42 +124,31 @@ void Menu()
         }
         case 3:
         {
-            ADD:
+            Func1Name:
             system("cls");
-            if (matrix1[0][0] == (float)TRASHVALUE)
-                cout << "Lack of input matrix, requires input!" << endl;
-            else
-            {
-                if (size1 != size2)
-                {
-                    cout << "Matrices sizes are not the same" << endl;
-                }
-                else
-                {
-                    sumMatrix(matrix1, matrix2, size1, result, preChoice);
-                    cout << "Finish calculation" << endl;
-                }
-            }
+            /*
+             code 
+            */
             nextstep = Continue();
-            if (nextstep == 1) goto ADD;
+            if (nextstep == 1) goto Func1Name;
             if (nextstep == 2) goto MENU;
             break;
         }
         case 4:
         {
-            MULTIPLY:
+            Func2Name:
             
 
 
 
             nextstep = Continue();
-            if (nextstep == 1) goto MULTIPLY;
+            if (nextstep == 1) goto Func2Name;
             if (nextstep == 2) goto MENU;
             break;
         }
         case 5:
         {
-            PERMUTECOLS:
+            Func3Name:
             
 
 
@@ -174,7 +156,7 @@ void Menu()
 
             INVALID:
             nextstep = Continue();
-            if (nextstep == 1) goto PERMUTECOLS;
+            if (nextstep == 1) goto Func3Name;
             if (nextstep == 2) goto MENU;
             break;
         }
@@ -273,163 +255,4 @@ int Continue() {
 	if (input == 'b')
 		return 2;
     return 0;
-}
-
-/*
-    hàm này đọc ma trận từ file text
-    string file: tên file text tồn tại trong cùng folder
-    int matrix[][]: Ma trận 2 chiều sẽ lưu ma trận đọc được, ma trận mặc định truyền theo tham chiếu
-    int &size: Kích thước của ma trận, vì là ma trận vuông nên số hàng = số cột. 
-    Dùng tham chiếu để biến trong hàm main cũng bị thay đổi
-*/
-int matrix_reader(string file, float matrix[][MAX_SIZE], int &size)
-{
-    size = -1; // Khởi tạo kích thước ma trận là -1. Tức là chưa biết kích thước
-    ifstream whatToRead;
-    whatToRead.open(file);
-    if (whatToRead.fail())
-        return 0;
-    string line;
-    int rows, cols;
-    for(rows = 0; getline( whatToRead, line ); ++rows)
-    {
-        string element = "";
-        cols = 0;
-        for(int t = 0; t < line.length(); ++t)
-        {
-            if(line[t] != ' ')
-            {
-                element += line[t];
-            }
-            if(line[t] == ' ' || t == line.length() - 1)
-            {
-                // Hàm atoi nhận vào biến kiểu char*, nên cần dùng .c_str() để chuyển từ string về char*
-                matrix[rows][cols] = atoi(element.c_str());
-                cols++;
-                // Đặt lại giá trị element
-                element = ""; 
-            }
-        }
-        // Nếu chưa gán giá trị kích thước ma trận thì gán trước.
-        // lấy số phần tử của hàng đầu tiên làm giá trị khởi tạo cho kích thước ma trận
-        if(size == -1) size = cols-1;
-        // Nếu số cột của một hàng bất kỳ khác số ẩn + 1 => không hợp lệ
-        if(size != cols-1) return 1;
-    }
-    // Nếu số hàng của ma trận khác số ẩn => không hợp lệ
-    if(size != rows) return 1;
-    whatToRead.close();
-    return 2;
-}
-
-void saveMatrixToFile(float result[][MAX_SIZE], int size, string filename, int preChoice, int col1, int col2) 
-{
-    ofstream file;
-    file.open(filename, ios :: out | ios :: app);;
-    if (!file.is_open()) 
-	{
-        cout << endl <<  "Không thể mở file để nhập kết quả" <<endl;
-        return;
-    } 
-	else 
-	{
-        switch (preChoice)
-        {
-            case 0:
-            {
-                file << endl << "Multiplication matrix  :" << endl;
-                break;
-            }
-            case 1:
-            {
-                file << endl << "Summation matrix:" << endl;
-                break;            
-            }
-            case 2:
-            {
-                file << endl << "Previous result matrix that has permute collumn " << col1 << " and " << col2 << ":" << endl;
-                break;            
-            }
-        }
-		for (int i = 0; i < size; ++i) 
-		{
-        	for (int j = 0; j < size+1; ++j) 
-            file << setw(8) << setprecision(3) << result[i][j];
-        file << endl;
-    	}
-    file.close();
-	}
-}
-
-void inputMatrixManually(float matrix[][MAX_SIZE], int &size)
-{
-    cout << endl << "Input matrix manually:" << endl;
-    cout << "Input matrix size:";
-    cin >> size;
-    for (int i = 0 ; i < size; i++ )
-        for (int j = 0 ; j < size + 1; j++)
-            cin >> matrix[i][j];
-}
-
-void sumMatrix( float matrix1[][MAX_SIZE], float matrix2[][MAX_SIZE], int size, float result[][MAX_SIZE], int &preChoice) 
-{
-	for(int i=0; i<size; i++) 
-	{
-		for(int j=0; j<size; j++) 
-			result[i][j]=matrix1[i][j]+matrix2[i][j];
-	}
-    preChoice = 1;
-}
-
-void printMatrix(float matrix[MAX_SIZE][MAX_SIZE], int size) 
-{
-	for (int i=0; i<size; i++) 
-	{
-		for(int j=0; j<size; j++) 
-			cout << setw(8) << setprecision(3) << matrix[i][j];
-		cout<<endl;
-	}
-}
-
-void PermuteCol(float matrix[][MAX_SIZE], int size, int col1, int col2, int &preChoice)
-{
-    int iARow, iACol;
-    int tmp;
- 
-    if (col1 < 0 || col1 >= size ||
-        col2 < 0 || col2 >= size ||
-        col1 == col2)
-    {
-        return;
-    }
- 
-    // Duyệt theo hàng
-    for (iARow = 0; iARow < size; iARow++)
-    {
-        tmp = matrix[iARow][col1];
-        matrix[iARow][col1] = matrix[iARow][col2];
-        matrix[iARow][col2] = tmp;
-    }
-    preChoice=2;
-}
-
-
-void dynamicallySavedMatrices(float matrix1[][MAX_SIZE],int &size1,float matrix2[][MAX_SIZE],int &size2,float matrix[][MAX_SIZE],int size)
-{
-    int i, j;
-    if (matrix1[0][0] != (float)TRASHVALUE)
-	{
-        size2= size1;
-        for(i=0; i<size2; i++) 
-        {
-            for(j=0; j<size2; j++) 
-                matrix2[i][j] = matrix1[i][j];
-        }
-    }
-    size1= size;
-	for(i=0; i<size1; i++) 
-	{
-		for(j=0; j<size1; j++) 
-			matrix1[i][j] = matrix[i][j];
-	}
 }
