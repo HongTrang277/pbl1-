@@ -6,8 +6,9 @@ using namespace std;
 
 typedef struct polynomial {
     unsigned int high_power; //high_power=size
-    int coeff_array [MAX_SIZE+1];
+    int coeff_array [MAX_SIZE]; // vector nghiệm nè ae, cấp tối đa là mũ 99 thôi được rồi
 } *POLYNOMIAL;
+
 void SumOfCols(float matrix[][MAX_SIZE],POLYNOMIAL poly, int &size) {
     int* coeff_ptr = poly->coeff_array;
     for(int i=0; i<=size; i++){
@@ -16,6 +17,13 @@ void SumOfCols(float matrix[][MAX_SIZE],POLYNOMIAL poly, int &size) {
             coeff_ptr[j] += matrix[i][j];
         }
     }
+}
+
+void zero_polynomial ( POLYNOMIAL poly) // cho tất cả các hệ số và bậc cao nhất =0
+{
+    for (int i =0; i <= MAX_SIZE; i++)
+        poly->coeff_array[i] =0;
+    poly->high_power = 0;
 }
 
 void display_polynomial(POLYNOMIAL poly, int &size)  //s

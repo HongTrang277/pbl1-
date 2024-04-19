@@ -139,7 +139,7 @@ void Menu()
             PRINTPOLYNOMIAL:
             system("cls");
             cout<<"Polynomial:"<<endl;
-            display_polynomial(poly,size);
+            display_polynomial(poly,size); // vector nghiệm sẽ là cái coeff_array[MAX_SIZE] á, tạo 1 cái biến POLYNOMIAL trỏ tới coeff_array là dc
             nextstep = Continue();
             if (nextstep == 1) goto PRINTPOLYNOMIAL;
             if (nextstep == 2) goto MENU;
