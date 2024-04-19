@@ -2,14 +2,24 @@
 #include <fstream>
 #include "PBLcalculation.hpp"
 #include "PBLmatrix&file.hpp"
-
-using namespace std;
+#include <windows.h>
 
 bool is_Vietnamese = true;
 
 int Continue();
 void Menu();
 
+void Color(int x)//X là mã màu (1-15)
+{
+     HANDLE h= GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(h, x);
+}
+
+void resetColor()
+{
+    Color(7);
+}
+ 
 float console() {
     float choose;
     do 
@@ -107,7 +117,7 @@ void Menu()
                 }
                 case 1:
                 {
-                    cout << endl << "Not a square matrix" << endl;
+                    cout << endl << "Invalid matrix" << endl;
                     break;
                 }
                 case 2:

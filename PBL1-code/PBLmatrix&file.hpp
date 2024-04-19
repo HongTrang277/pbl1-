@@ -18,6 +18,9 @@ void dynamicallySavedMatrices(float matrix1[][MAX_SIZE],int &size1,float matrix2
     int matrix[][]: Ma trận 2 chiều sẽ lưu ma trận đọc được, ma trận mặc định truyền theo tham chiếu
     int &size: Kích thước của ma trận, vì là ma trận vuông nên số hàng = số cột. 
     Dùng tham chiếu để biến trong hàm main cũng bị thay đổi
+    Case return 0: lỗi không đọc được file
+    Case return 1: Lỗi ma trận không hợp lệ
+    Case return 2: Đọc ma trận thành công
 */
 int matrix_reader(string file, float matrix[][MAX_SIZE], int &size)
 {
@@ -27,6 +30,7 @@ int matrix_reader(string file, float matrix[][MAX_SIZE], int &size)
     if (whatToRead.fail())
         return 0;
     string line;
+    int dotCount=0;
     int rows, cols;
     for(rows = 0; getline( whatToRead, line ); ++rows)
     {
@@ -34,17 +38,30 @@ int matrix_reader(string file, float matrix[][MAX_SIZE], int &size)
         cols = 0;
         for(int t = 0; t < line.length(); ++t)
         {
-            if(line[t] != ' ')
+            // Nếu là chữ thì không hợp lệ
+            if ((line[t] >= 'a' && line[t]<= 'z') || (line[t]>= 'A' && line[t]<= 'Z'))
+                return 1;
+            // Đếm số dấu chấm của số thập phân
+            if (line[t] == '.')
+            {
+                dotCount ++;
+                if (dotCount > 1 )
+                    return 1;
+            }
+            // Nếu không phải dấu cách thì nối vào element
+            if (line[t] != ' ')
             {
                 element += line[t];
             }
-            if(line[t] == ' ' || t == line.length() - 1)
+            if (line[t] == ' ' || t == line.length() - 1)
             {
-                // Hàm atoi nhận vào biến kiểu char*, nên cần dùng .c_str() để chuyển từ string về char*
-                matrix[rows][cols] = atoi(element.c_str());
+                // Hàm atof nhận vào biến kiểu char* và chuyển về kiểu double, nên cần dùng .c_str() để chuyển từ string về char*
+                matrix[rows][cols] = static_cast<float>(atof(element.c_str()));
                 cols++;
                 // Đặt lại giá trị element
                 element = ""; 
+                // Đặt lại giá trị dotCount
+                dotCount=0;
             }
         }
         // Nếu chưa gán giá trị kích thước ma trận thì gán trước.
@@ -112,7 +129,7 @@ void printMatrix(float matrix[MAX_SIZE][MAX_SIZE], int size)
 {
 	for (int i=0; i<size; i++) 
 	{
-		for(int j=0; j<size; j++) 
+		for(int j=0; j<size + 1; j++) 
 			cout << setw(8) << setprecision(3) << matrix[i][j];
 		cout<<endl;
 	}
