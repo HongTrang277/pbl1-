@@ -29,7 +29,7 @@ List createList()
     return headerNode;
 }
 
-Position insert(List &pL, struct ElementType e, Position p) {
+Position insert(List pL, struct ElementType e, Position p) {
     // vì phần tử trong list là kiểu Node*, nên nếu lấy struct Node làm kiểu biến thì phải thêm "*"
     Position newItem = new Node;
     newItem->value = e;
