@@ -1,11 +1,13 @@
 #include <bits/stdc++.h>
+#include <cstdlib>
+#include <string>
 
 using namespace std;
 
 struct ElementType {
     unsigned long CCCD; // CCCD của cổ đông
-    char *shareHolder; // cổ đông
-    char *StockSymbol; // Mã cổ phiếu
+    string shareHolder; // cổ đông
+    string StockSymbol; // Mã cổ phiếu
     unsigned long share; // số cổ phiếu
 };
 
@@ -16,21 +18,20 @@ struct Node
     struct Node *prev;
 };
 
-typedef struct Node *List;
-typedef struct Node *Position;
+typedef struct Node* List;
+typedef struct Node* Position;
 
 
 List createList()
 {
-    List headerNode = (Node*)malloc(sizeof (struct Node));
+    List headerNode = new Node;
     headerNode->next = NULL;
     return headerNode;
 }
 
-Position insert(List *pL, struct ElementType e, Position p) {
+Position insert(List &pL, struct ElementType e, Position p) {
     // vì phần tử trong list là kiểu Node*, nên nếu lấy struct Node làm kiểu biến thì phải thêm "*"
-    struct Node *newItem = (Node*)malloc(sizeof(struct Node));
-
+    Position newItem = new Node;
     newItem->value = e;
     // Nếu insert số 5 vào vị trí thứ 2 trong 3 số 1,2,3 thì p ở vị trí thứ nhất, dãy sau khi insert: 1,5,2,3
     
@@ -46,27 +47,28 @@ Position insert(List *pL, struct ElementType e, Position p) {
     return newItem;
 }
 
-void listByStockSymbol(List pL, char *MaCoPhieu)
+void listByStockSymbol(List pL, string MaCoPhieu)
 {
-    int dontexist=0;
-    cout << "Những người sở hữu cổ phiếu " << MaCoPhieu <<" !" << endl;
-    while (pL!=NULL && pL->value.StockSymbol != MaCoPhieu )
+    bool exist = false;
+    cout << "Owners of " << MaCoPhieu <<" :" << endl;
+    while (pL!=NULL)
     {
-        if (pL!=NULL)
+        if (pL!=NULL  && pL->value.StockSymbol == MaCoPhieu )
         {  
-            cout << "*** " << " Tên | " <<  pL->value.shareHolder <<  " | - Mã số CCCD" << pL->value.CCCD << endl ;
-            cout << "*** " << " Mã chứng khoán | " << pL->value.StockSymbol << " | - Số cổ phiếu : " << pL->value.share <<" ***" << endl;
+            exist = true;
+            cout << "*** " << " Name | " <<  pL->value.shareHolder <<  " | - ID : " << pL->value.CCCD << endl ;
+            cout << "*** " << " Stock Symbol | " << pL->value.StockSymbol << " | - Number of share : " << pL->value.share <<" ***" << endl;
         }
-        if (dontexist)
-            cout << "Không có dữ liệu !";
-
         pL = pL->next;
     }
+    if (!exist)
+        cout << "Không có dữ liệu !";
 }
 
 Position findGreatestShare(List pL)
 {
-    Position MaxSharePos;
+    Position MaxSharePos = new Node;
+    pL = pL->next;
     MaxSharePos->value.share = pL->value.share;
     while (pL!=NULL)
         {
@@ -97,33 +99,39 @@ void Delete(Position p)
 
 void display(List pL)
 {
+    pL = pL->next;
+    if (pL==NULL)
+    {
+        cout << "List is empty!";
+        return;
+    }
     int count =1;
     while (pL!= NULL)
     {
         cout << endl;
-        cout << "*** " << count << " Tên | " <<  pL->value.shareHolder <<  " | - Mã số CCCD" << pL->value.CCCD << endl ;
-        cout << "*** " << " Mã chứng khoán | " << pL->value.StockSymbol << " | - Số cổ phiếu : " << pL->value.share <<" ***" << endl;
+        cout << "*** " << count << " Name | " <<  pL->value.shareHolder <<  " | - ID : " << pL->value.CCCD << endl ;
+        cout << "*** " << " Stock Symbol | " << pL->value.StockSymbol << " | - Number of share : " << pL->value.share <<" ***" << endl;
         count++;
         pL = pL->next;
     }
 }
 int main()
 {
-    List pL;
+    List pL  = new Node;
+    pL = createList();
+    struct ElementType item1 , item2, item3 ,item4,item5;
+    item1.CCCD = 1603; item1.shareHolder = "Lam Na"; item1.StockSymbol = "PNJ" ; item1.share = 4000;
+    item2.CCCD = 2710; item2.shareHolder = "Hchang"; item2.StockSymbol = "KHDL" ; item2.share = 3000;
+    item3.CCCD = 1234; item3.shareHolder = "Thu phien"; item3.StockSymbol = "PNJ" ; item3.share = 3999;
+    item4.CCCD = 1235; item4.shareHolder = "Do Thang"; item4.StockSymbol = "Lo?" ; item4.share = 9999;
+    item5.CCCD = 1235; item5.shareHolder = "Nguyễn Thái Ngọc Thảo"; item5.StockSymbol = "Nhat" ; item5.share = 1234;
 
-    struct ElementType item1 , item2, item3 ,item4, item5;
-    item1.CCCD = 1603; item1.shareHolder = "Lê Ngọc Lâm Na"; item1.StockSymbol = "PNJ" ; item1.share = 4000;
-    item2.CCCD = 2710; item2.shareHolder = "Nguyễn Thị Hồng Trang"; item2.StockSymbol = "KHDL" ; item2.share = 3000;
-    item3.CCCD = 1234; item3.shareHolder = "Đoàn Hoàng Thiên Phú"; item3.StockSymbol = "PNJ" ; item3.share = 3999;
-    item4.CCCD = 1235; item4.shareHolder = "Nguyễn Đỗ Thắng"; item4.StockSymbol = "Lo?" ; item4.share = 9999;
-    item5.CCCD = 1236; item5.shareHolder = "Nguyễn Thái Ngọc Thảo"; item5.StockSymbol = "Nhat" ; item1.share = 1234;
-
-    Position p;
-    p= insert(&pL, item1, p);
-    p= insert(&pL, item2, p);
-    p= insert(&pL, item3, p);
-    p= insert(&pL, item4, p);
-    p= insert(&pL, item5, p);
+    Position p ;
+    p= insert(pL, item1, pL);
+    p= insert(pL, item2, p);
+    p= insert(pL, item3, p);
+    p= insert(pL, item4, p);
+    p= insert(pL, item5, p);
 
     display(pL);
 
@@ -132,18 +140,19 @@ int main()
     if (p!=NULL)
     {  
         cout << "Found !" << endl;
-        cout << "*** " << " Tên | " <<  pL->value.shareHolder <<  " | - Mã số CCCD" << pL->value.CCCD << endl ;
-        cout << "*** " << " Mã chứng khoán | " << pL->value.StockSymbol << " | - Số cổ phiếu : " << pL->value.share <<" ***" << endl;
+        cout << "*** " << " Name | " <<  p->value.shareHolder <<  " | - ID :" << p->value.CCCD << endl ;
+        cout << "*** " << " Stock Symbol | " << p->value.StockSymbol << " | - Number of share : " << p->value.share <<" ***" << endl;
     }
     else 
         cout << "Not found !";
 
     listByStockSymbol(pL, "PNJ");
 
-    p = findWithCCCD(pL,1235);
+    p = findGreatestShare(pL);
     
     Delete(p);
     cout << "The list after deletion" << endl;
     display(pL);
+    delete(pL);
     return 0;
 }

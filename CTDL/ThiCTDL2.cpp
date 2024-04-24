@@ -23,7 +23,7 @@ unsigned int Max(unsigned int a, unsigned int b)
 
 void display_polynomial(POLYNOMIAL poly)
 {
-    for(int i=0; i<=3; i++ ) {
+    for(int i=0; i<= poly->high_power; i++ ) {
         if(poly->coeff_array[i]!=0){
             if(poly->coeff_array[i] >0 && i!=0)
                 cout<<" + ";
@@ -31,9 +31,9 @@ void display_polynomial(POLYNOMIAL poly)
                 cout<<" - ";
             if(abs(poly->coeff_array[i])!=1)
                 cout<<abs(poly->coeff_array[i]);
-            if(abs(poly->coeff_array[i])>0 && i<3){
+            if(abs(poly->coeff_array[i])>0 && i< poly->high_power){
                 cout<<"x";
-                if(i<2) cout<<"^"<<3 -i;
+                if(i< poly->high_power-1) cout<<"^"<<poly->high_power - i;
             }
         }
     }
@@ -53,14 +53,17 @@ void SUM(POLYNOMIAL poly1, POLYNOMIAL poly2, POLYNOMIAL poly_sum)
 
 void mult_polynomial (POLYNOMIAL poly1, POLYNOMIAL poly2, POLYNOMIAL poly_prod)
 {
-    zero_polynomial(poly_prod);
-    poly_prod->high_power = poly1->high_power + poly2->high_power;
-    for (int i = 0; i<= poly1->high_power;i++)
-        for(int j=0; j<= poly2->high_power; j++)
-        {
-            poly_prod->coeff_array[i+j] = poly1->coeff_array[i]*poly2->coeff_array[j];
-        }
+  zero_polynomial(poly_prod);
+  poly_prod->high_power = poly1->high_power + poly2->high_power;
+
+  for (int i = 0; i <= poly1->high_power; i++) {
+    for (int j = 0; j <= poly2->high_power; j++) {
+      int coeff = poly1->coeff_array[i] * poly2->coeff_array[j];
+      poly_prod->coeff_array[i + j] += coeff;
+    }
+  }
 }
+
 
 int main()
 {
@@ -69,9 +72,8 @@ int main()
     POLYNOMIAL poly_sum = (POLYNOMIAL)malloc(sizeof(struct polynomial));
     POLYNOMIAL poly_prod = (POLYNOMIAL)malloc(sizeof(struct polynomial));
     zero_polynomial(poly1);zero_polynomial(poly2);
-    zero_polynomial(poly_prod);zero_polynomial(poly_sum);
     poly1->high_power =3;
-    poly1->coeff_array[0]= 7;
+    poly1->coeff_array[0]= -7;
     poly1->coeff_array[1]= 0;
     poly1->coeff_array[2]= 4;
     poly1->coeff_array[3]= 10;
