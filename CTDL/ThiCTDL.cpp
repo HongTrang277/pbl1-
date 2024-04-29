@@ -29,7 +29,7 @@ List createList()
     return headerNode;
 }
 
-Position insert(List pL, struct ElementType e, Position p) {
+Position insert(ElementType e, Position p) {
     // vì phần tử trong list là kiểu Node*, nên nếu lấy struct Node làm kiểu biến thì phải thêm "*"
     Position newItem = new Node;
     newItem->value = e;
@@ -65,18 +65,29 @@ void listByStockSymbol(List pL, string MaCoPhieu)
         cout << "Không có dữ liệu !";
 }
 
-Position findGreatestShare(List pL)
+void findGreatestShare(List pL)
 {
     Position MaxSharePos = new Node;
-    pL = pL->next;
-    MaxSharePos->value.share = pL->value.share;
+    Position temp = new Node;
+    temp = pL->next;
+    MaxSharePos->value.share = temp->value.share;
+    while (temp!=NULL)
+        {
+            if (temp->value.share > MaxSharePos->value.share)
+                MaxSharePos =temp;  
+            temp = temp->next;
+        }
+    int count=1;
     while (pL!=NULL)
         {
-            if (pL->value.share > MaxSharePos->value.share)
-                MaxSharePos =pL;  
+            if (pL->value.share == MaxSharePos->value.share)
+            {
+                cout << "*** " << count << " Name | " <<  pL->value.shareHolder <<  " | - ID : " << pL->value.CCCD << endl ;
+                cout << "*** " << " Stock Symbol | " << pL->value.StockSymbol << " | - Number of share : " << pL->value.share <<" ***" << endl;
+                count++; 
+            }
             pL = pL->next;
         }
-    return MaxSharePos;
 }
 
 Position findWithCCCD(List pL, unsigned long ID)
@@ -124,16 +135,22 @@ int main()
     item2.CCCD = 2710; item2.shareHolder = "Hchang"; item2.StockSymbol = "KHDL" ; item2.share = 3000;
     item3.CCCD = 1234; item3.shareHolder = "Thu phien"; item3.StockSymbol = "PNJ" ; item3.share = 3999;
     item4.CCCD = 1235; item4.shareHolder = "Do Thang"; item4.StockSymbol = "Lo?" ; item4.share = 9999;
-    item5.CCCD = 1235; item5.shareHolder = "Nguyễn Thái Ngọc Thảo"; item5.StockSymbol = "Nhat" ; item5.share = 1234;
+    item5.CCCD = 1235; item5.shareHolder = "Nguyễn Thái Ngọc Thảo"; item5.StockSymbol = "Nhat" ; item5.share = 9999;
 
     Position p ;
-    p= insert(pL, item1, pL);
-    p= insert(pL, item2, p);
-    p= insert(pL, item3, p);
-    p= insert(pL, item4, p);
-    p= insert(pL, item5, p);
+    p= insert(item1, pL);
+    p= insert(item2, p);
+    p= insert(item3, p);
+    p= insert(item4, p);
+    p= insert(item5, p);
 
     display(pL);
+
+    listByStockSymbol(pL, "PNJ");
+
+    cout << endl;
+
+    findGreatestShare(pL);
 
     p = findWithCCCD(pL,1235);
 
@@ -145,10 +162,6 @@ int main()
     }
     else 
         cout << "Not found !";
-
-    listByStockSymbol(pL, "PNJ");
-
-    p = findGreatestShare(pL);
     
     Delete(p);
     cout << "The list after deletion" << endl;

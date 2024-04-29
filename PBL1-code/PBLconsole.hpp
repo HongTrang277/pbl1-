@@ -3,7 +3,6 @@
 #include "PBLcalculation.hpp"
 #include "PBLmatrix&file.hpp"
 #include <windows.h>
-#include "PBLpolynomial.hpp"
 
 using namespace std;
 
@@ -14,13 +13,13 @@ void Menu();
 
 void Color(int x)//X là mã màu (1-15)
 {
-     HANDLE h= GetStdHandle(STD_OUTPUT_HANDLE);
+    HANDLE h= GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(h, x);
 }
 
 void resetColor()
 {
-    Color(7);
+    Color(15);
 }
  
 float console() {
@@ -29,14 +28,16 @@ float console() {
     {
         cout << endl;
         cout << "=========== Simple matrix calculator ===========" << endl;
+        cout << "|                                              |" << endl;
         cout << "|   1. Input matrix manually                   |" << endl;
         cout << "|   2. Read matrix from file                   |" << endl;
         cout << "|   3. Turn into upper triangle matrix         |" << endl;
         cout << "|   4. Print polynomial p(x) to terminal       |" << endl;
         cout << "|   5. Calculate q(x)= SUM(p(xi))              |" << endl;
-        cout << "|   6. Save result to file                     |" << endl;
+        cout << "|   6. Save to file                            |" << endl;
         cout << "|   7. Print matrix to terminal                |" << endl;
         cout << "|   8. Close program                           |" << endl;
+        cout << "|                                              |" << endl;
         cout << "================================================" << endl;
         cout << "Choose your option: ";
         cin >> choose;
@@ -57,19 +58,25 @@ float console() {
 
 void Menu()
 {
+    int i;
     int size,size1,size2;
 
 	string fileName;
 
     float matrix[MAX_SIZE][MAX_SIZE];
-	float matrix1[MAX_SIZE][MAX_SIZE];
-    matrix1[0][0]=(float)TRASHVALUE;
-	float matrix2[MAX_SIZE][MAX_SIZE];
-    matrix2[0][0]=(float)TRASHVALUE;
-	float result[MAX_SIZE][MAX_SIZE]; // ma trận kết quả
-    result[0][0]=(float)TRASHVALUE;
+	float valid_matrix[MAX_SIZE][MAX_SIZE];
+    valid_matrix[0][0]=(float)TRASHVALUE;
+	float triangle_matrix[MAX_SIZE][MAX_SIZE];
+    triangle_matrix[0][0]=(float)TRASHVALUE;
+    float resVector[MAX_SIZE];
+    resVector[0]=(float)TRASHVALUE;
+    double Qx;
+
 	int col1, col2;
 	
+    POLYNOMIAL poly = new polynomial;
+    zero_polynomial(poly);
+
     int userChoice;
     int nextstep, preChoice= -1;
     //preChoice =-1 là trước đó không có phép tính hay kết quả nào để lưu vào file
@@ -99,7 +106,7 @@ void Menu()
             system("cls");
             inputMatrixManually(matrix, size);
             cin.ignore(1000 , '\n');
-            dynamicallySavedMatrices(matrix1, size1, matrix2, size2, matrix, size);
+            SavedValidMatrices(matrix,size1,valid_matrix,size2);
             nextstep = Continue();
             if (nextstep == 1) goto INPUTMANUALLY;
             if (nextstep == 2) goto MENU;
@@ -126,6 +133,7 @@ void Menu()
                 case 2:
                 {
                     cout << endl << "Read matrix from file \"" << fileName << "\" succeed" << endl;
+                    SavedValidMatrices(matrix,size1,valid_matrix,size2);
                     break;
                 }
             }
@@ -136,13 +144,17 @@ void Menu()
         }
         case 3:
         {
-            Func1Name:
+            GEI:
             system("cls");
-            /*
-             code 
-            */
+            if (matrix[0][0] == (float)TRASHVALUE)
+                cout << endl << "Lack of input matrix, requires input!" << endl;
+            else
+            {
+                TurnIntoTriangleMatrix(valid_matrix,size1);
+                cout << "Finish Gaussion elimination implementation" << endl;
+            }
             nextstep = Continue();
-            if (nextstep == 1) goto Func1Name;
+            if (nextstep == 1) goto GEI;
             if (nextstep == 2) goto MENU;
             break;
         }
@@ -150,8 +162,9 @@ void Menu()
         {
             PRINTPOLYNOMIAL:
             system("cls");
-            cout<<"Polynomial:"<<endl;
-            display_polynomial(poly,size); // vector nghiệm sẽ là cái coeff_array[MAX_SIZE] á, tạo 1 cái biến POLYNOMIAL trỏ tới coeff_array là dc
+            cout <<"Polynomial:"<<endl;
+            display_polynomial(poly,size); 
+            cout << endl;
             nextstep = Continue();
             if (nextstep == 1) goto PRINTPOLYNOMIAL;
             if (nextstep == 2) goto MENU;
@@ -159,52 +172,51 @@ void Menu()
         }
         case 5:
         {
-            Func3Name:
-            
-
-
-
-
-            INVALID:
-            nextstep = Continue();
-            if (nextstep == 1) goto Func3Name;
-            if (nextstep == 2) goto MENU;
-            break;
-        }
-        case 6:
-        {
-            if (preChoice != -1)
-            {
-                saveMatrixToFile(result,size1,"result.txt", preChoice,col1,col2);
-                cout << "Saved to file: result.txt" << endl;
-            }
+            CalculateQx:
+            system("cls");
+            if (resVector[0] == (float)TRASHVALUE)
+                        cout << "You haven't calculate anything" << endl;
             else
-                cout << "No calculation was made!" << endl;
-            cout << "Press Enter to back to MENU " << endl;
+            {
+                Qx = 0;
+                for (i = size1; i>=1; i--)
+                {
+                    Qx += CalculatePx(poly,resVector[i]);
+                }
+                cout << " Result of Q(x) = SUM(P(xi)) with i=(1,n) :" << endl;
+                cout << setw(15) << setprecision(3) << Qx;
+            }
+            cout << "Press Enter to back to MENU" << endl;
+            cin.ignore(1000 , '\n');
             cin.get();
             goto MENU;
             break;
         }
-        case 7:
+        case 6:
         {
-            PRINT:
             system("cls");
-            cout << "====Which matrix do you want do print?====" << endl;
-            cout << "|  1. Matrix 1 (Your latest valid input) |" << endl;
-            cout << "|  2. Matrix 2 (Previous valid input)    |" << endl;
-            cout << "|  3. Last result                        |" << endl;
-            cout << "==========================================" << endl << endl;
+            cout << "======What do you want to save to file?======" << endl;
+            cout << "|                                            |" << endl;
+            cout << "|  1. Input matrix (Your latest valid input) |" << endl;
+            cout << "|  2. Triangle matrix (Latest calcutlation)  |" << endl;
+            cout << "|  3. Save polynomial to file                |" << endl;
+            cout << "|  4. Save result vector to file             |" << endl;
+            cout << "|                                            |" << endl;
+            cout << "==============================================" << endl << endl;
             cout << "Enter number of choice:" << endl;
             cin >> userChoice;
-            switch(userChoice)
+            switch (userChoice)
             {
                 case 1:
                 {
                     system("cls");
-                    cout << "Matrix 1:" << endl;
-                    if (matrix1[0][0] == (float)TRASHVALUE)
-                        cout << "You haven't input matrix 1" << endl;
-                    else printMatrix(matrix1,size1);
+                    if (valid_matrix[0][0] == (float)TRASHVALUE)
+                        cout << "You haven't input a valid matrix" << endl;
+                    else
+                    {
+                        saveMatrixToFile(valid_matrix,size1,"result.txt", preChoice,col1,col2);
+                        cout << "Saved to file: result.txt" << endl;
+                    }
                     cout << "Press Enter to back to MENU" << endl;
                     cin.ignore(1000 , '\n');
                     cin.get();
@@ -215,23 +227,95 @@ void Menu()
                 {
                     system("cls");
                     cout << "Matrix 2: " << endl;
-                    if (matrix2[0][0] == (float)(float)TRASHVALUE)
-                        cout << "You haven't input matrix 2" << endl;
-                    else printMatrix(matrix2,size2);
+                    if (triangle_matrix[0][0] == (float)(float)TRASHVALUE)
+                        cout << "You haven't calculate any triangle matrix" << endl;
+                    else 
+                    {
+                        saveMatrixToFile(triangle_matrix,size1,"result.txt", preChoice,col1,col2);
+                        cout << "Saved to file: result.txt" << endl;
+                    }
                     cout << "Press Enter to back to MENU" << endl;
                     cin.ignore(1000 , '\n');
                     cin.get();
                     goto MENU;
                     break;
                 }
-                case 3: 
+                // case 3:
+                // {
+                //     system("cls");
+                //     if (poly->high_power == 0)
+                //         cout << "You haven't input matrix" << endl;
+                //     else
+                //     {
+                //         saveMatrixToFile(valid_matrix,size1,"result.txt", preChoice,col1,col2);
+                //         cout << "Saved to file: result.txt" << endl;
+                //     }
+                //     cout << "Press Enter to back to MENU" << endl;
+                //     cin.ignore(1000 , '\n');
+                //     cin.get();
+                //     goto MENU;
+                //     break;
+                // }
+                // case 4:
+                // {
+                //     system("cls");
+                //     if (valid_matrix[0][0] == (float)TRASHVALUE)
+                //         cout << "You haven't input matrix" << endl;
+                //     else
+                //     {
+                //         saveMatrixToFile(valid_matrix,size1,"result.txt", preChoice,col1,col2);
+                //         cout << "Saved to file: result.txt" << endl;
+                //     }
+                //     cout << "Press Enter to back to MENU" << endl;
+                //     cin.ignore(1000 , '\n');
+                //     cin.get();
+                //     goto MENU;
+                //     break;
+                // }
+                default:
+                {
+                    cout << "Not a choice!?" << endl;
+                    cout << "Press Enter to back to MENU" << endl;
+                    cin.get();
+                    goto MENU;
+                }
+            }
+
+        }
+        case 7:
+        {
+            PRINT:
+            system("cls");
+            cout << "======Which matrix do you want do print?======" << endl;
+            cout << "|                                             |" << endl;
+            cout << "|  1. Input matrix (Your latest valid input)  |" << endl;
+            cout << "|  2. Triangle matrix (Latest calcutlation)   |" << endl;
+            cout << "|                                             |" << endl;
+            cout << "==============================================" << endl << endl;
+            cout << "Enter number of choice:" << endl;
+            cin >> userChoice;
+            switch(userChoice)
+            {
+                case 1:
                 {
                     system("cls");
-                    cout << "Your last result: " << endl;
-                    if (preChoice == -1)
-                        cout << "No calculation was made" << endl;
-                    //chỗ này phải tạo thêm 1 biến resultSize, nếu không thì khi input thêm >=2 ma trận khác kích thước sẽ có lỗi 
-                    else printMatrix(result,size1);
+                    cout << "Linear Matrix :" << endl;
+                    if (valid_matrix[0][0] == (float)TRASHVALUE)
+                        cout << "You haven't input any" << endl;
+                    else printMatrix(valid_matrix,size1);
+                    cout << "Press Enter to back to MENU" << endl;
+                    cin.ignore(1000 , '\n');
+                    cin.get();
+                    goto MENU;
+                    break;
+                }
+                case 2:
+                {
+                    system("cls");
+                    cout << "Matrix 2: " << endl;
+                    if (triangle_matrix[0][0] == (float)(float)TRASHVALUE)
+                        cout << "You haven't calculate triangle matrix" << endl;
+                    else printMatrix(triangle_matrix,size2);
                     cout << "Press Enter to back to MENU" << endl;
                     cin.ignore(1000 , '\n');
                     cin.get();

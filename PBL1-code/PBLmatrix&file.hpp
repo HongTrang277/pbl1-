@@ -10,7 +10,7 @@ int matrix_reader(string file, float matrix[][MAX_SIZE], int &size);
 void inputMatrixManually(float matrix[][MAX_SIZE], int &size);
 void printMatrix(float matrix[MAX_SIZE][MAX_SIZE], int size);
 void saveMatrixToFile(float result[][MAX_SIZE], int size, string filename, int preChoice, int col1, int col2);
-void dynamicallySavedMatrices(float matrix1[][MAX_SIZE],int &size1,float matrix2[][MAX_SIZE],int &size2,float matrix[][MAX_SIZE],int size);
+int SavedValidMatrices(float matrix1[][MAX_SIZE],int &size1,float target_matrix[][MAX_SIZE],int &size2);
 
 /*
     hàm này đọc ma trận từ file text
@@ -135,3 +135,18 @@ void printMatrix(float matrix[MAX_SIZE][MAX_SIZE], int size)
 	}
 }
 
+int SavedValidMatrices(float matrix1[][MAX_SIZE],int &size1,float target_matrix[][MAX_SIZE],int &size2)
+{
+    int i, j;
+    if (matrix1[0][0] != (float)TRASHVALUE)
+	{
+        size2= size1;
+        for(i=0; i<size2; i++) 
+        {
+            for(j=0; j<size2; j++) 
+                target_matrix[i][j] = matrix1[i][j];
+        }
+        return 1; // Lưu ma trận thành công
+    }
+    return 0; // không có ma trận 1
+}
