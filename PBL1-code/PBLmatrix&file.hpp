@@ -91,17 +91,12 @@ void saveMatrixToFile(float result[][MAX_SIZE], int size, string filename, int p
         {
             case 0:
             {
-                file << endl << "Multiplication matrix  :" << endl;
+                file << endl << "Linear matrix equation:" << endl; // Lưu ma trận hệ số tuyến tính vào file
                 break;
             }
             case 1:
             {
-                file << endl << "Summation matrix:" << endl;
-                break;            
-            }
-            case 2:
-            {
-                file << endl << "Previous result matrix that has permute collumn " << col1 << " and " << col2 << ":" << endl;
+                file << endl << "Upper triangle matrix:" << endl; // Ma trận tam giác trên
                 break;            
             }
         }

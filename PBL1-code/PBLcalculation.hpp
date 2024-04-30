@@ -2,6 +2,7 @@
 #include <fstream>
 #include <math.h>
 #include <stdlib.h>
+#include <string>
 
 #define MAX_SIZE 100
 using namespace std;
@@ -125,4 +126,56 @@ void PermuteRow(float matrix[][MAX_SIZE], int size, int row1, int row2)
         matrix[row1][iACol] = matrix[row2][iACol];
         matrix[row2][iACol] = tmp;
     }
+}
+
+void savepoly_resToFile(POLYNOMIAL poly,float resVector[MAX_SIZE], int size, string filename, int preChoice) 
+{
+    ofstream file;
+    file.open(filename, ios :: out | ios :: app);;
+    if (!file.is_open()) 
+	{
+        cout << endl <<  "Không thể mở file để nhập kết quả" <<endl;
+        return;
+    } 
+	else 
+	{
+        switch (preChoice)
+        {
+            case 2:
+            {
+                file << endl << "Polinomial P(x):" << endl;
+                poly->high_power=size;
+                for(int i=0; i<=size; i++ ) 
+                {
+                    if(poly->coeff_array[i]!=0)
+                    {
+                        if(poly->coeff_array[i] >0 && i!=0)
+                            file << " + ";
+                        else if(poly->coeff_array[i]<0)
+                            file << " - ";
+                        if(abs(poly->coeff_array[i])!=1)
+                            file << abs(poly->coeff_array[i]);
+                        if(abs(poly->coeff_array[i])!=1 && i == size-1)
+                            file << 1;
+                        if(abs(poly->coeff_array[i])>0 && i<size){
+                            file << "x";
+                            if(i<size-1) file <<"^"<<size -i;
+                        }
+                    }
+                }
+                file << endl;
+                break;
+            }
+            case 3:
+            {
+                file << endl << "Result vector :" << endl;
+                for (int i =0 ; i <size; i++ )
+                    file << resVector[i];
+                file << endl;
+                break;            
+            }
+        }
+        file << endl;
+    }
+    file.close();
 }

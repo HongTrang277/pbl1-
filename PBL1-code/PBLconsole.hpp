@@ -2,7 +2,6 @@
 #include <fstream>
 #include "PBLcalculation.hpp"
 #include "PBLmatrix&file.hpp"
-#include <windows.h>
 
 using namespace std;
 
@@ -11,17 +10,6 @@ bool is_Vietnamese = true;
 int Continue();
 void Menu();
 
-void Color(int x)//X là mã màu (1-15)
-{
-    HANDLE h= GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(h, x);
-}
-
-void resetColor()
-{
-    Color(15);
-}
- 
 float console() {
     float choose;
     do 
@@ -240,38 +228,38 @@ void Menu()
                     goto MENU;
                     break;
                 }
-                // case 3:
-                // {
-                //     system("cls");
-                //     if (poly->high_power == 0)
-                //         cout << "You haven't input matrix" << endl;
-                //     else
-                //     {
-                //         saveMatrixToFile(valid_matrix,size1,"result.txt", preChoice,col1,col2);
-                //         cout << "Saved to file: result.txt" << endl;
-                //     }
-                //     cout << "Press Enter to back to MENU" << endl;
-                //     cin.ignore(1000 , '\n');
-                //     cin.get();
-                //     goto MENU;
-                //     break;
-                // }
-                // case 4:
-                // {
-                //     system("cls");
-                //     if (valid_matrix[0][0] == (float)TRASHVALUE)
-                //         cout << "You haven't input matrix" << endl;
-                //     else
-                //     {
-                //         saveMatrixToFile(valid_matrix,size1,"result.txt", preChoice,col1,col2);
-                //         cout << "Saved to file: result.txt" << endl;
-                //     }
-                //     cout << "Press Enter to back to MENU" << endl;
-                //     cin.ignore(1000 , '\n');
-                //     cin.get();
-                //     goto MENU;
-                //     break;
-                // }
+                case 3:
+                {
+                    system("cls");
+                    if (poly->high_power == 0)
+                        cout << "You haven't input matrix" << endl;
+                    else
+                    {
+                        savepoly_resToFile(poly , resVector, size, "result.txt", preChoice);
+                        cout << "Saved to file: result.txt" << endl;
+                    }
+                    cout << "Press Enter to back to MENU" << endl;
+                    cin.ignore(1000 , '\n');
+                    cin.get();
+                    goto MENU;
+                    break;
+                }
+                case 4:
+                {
+                    system("cls");
+                    if (resVector[0] == (float)TRASHVALUE)
+                        cout << "You haven't solve linear Matrix" << endl;
+                    else
+                    {
+                        saveMatrixToFile(valid_matrix,size1,"result.txt", preChoice,col1,col2);
+                        cout << "Saved to file: result.txt" << endl;
+                    }
+                    cout << "Press Enter to back to MENU" << endl;
+                    cin.ignore(1000 , '\n');
+                    cin.get();
+                    goto MENU;
+                    break;
+                }
                 default:
                 {
                     cout << "Not a choice!?" << endl;
