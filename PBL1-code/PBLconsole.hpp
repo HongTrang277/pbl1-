@@ -94,7 +94,7 @@ void Menu()
             system("cls");
             inputMatrixManually(matrix, size);
             cin.ignore(1000 , '\n');
-            SavedValidMatrices(matrix,size1,valid_matrix,size2);
+            SavedValidMatrices(matrix,size,valid_matrix,size1);
             nextstep = Continue();
             if (nextstep == 1) goto INPUTMANUALLY;
             if (nextstep == 2) goto MENU;
@@ -121,7 +121,7 @@ void Menu()
                 case 2:
                 {
                     cout << endl << "Read matrix from file \"" << fileName << "\" succeed" << endl;
-                    SavedValidMatrices(matrix,size1,valid_matrix,size2);
+                    SavedValidMatrices(matrix,size,valid_matrix,size1);
                     break;
                 }
             }
@@ -134,11 +134,12 @@ void Menu()
         {
             GEI:
             system("cls");
-            if (matrix[0][0] == (float)TRASHVALUE)
+            if (valid_matrix[0][0] == (float)TRASHVALUE)
                 cout << endl << "Lack of input matrix, requires input!" << endl;
             else
             {
-                TurnIntoTriangleMatrix(valid_matrix,size1);
+                size2 = size1;
+                TurnIntoTriangleMatrix(valid_matrix,size1, triangle_matrix, size2);
                 cout << "Finish Gaussion elimination implementation" << endl;
             }
             nextstep = Continue();
@@ -151,7 +152,7 @@ void Menu()
             PRINTPOLYNOMIAL:
             system("cls");
             cout <<"Polynomial:"<<endl;
-            display_polynomial(poly,size); 
+            display_polynomial(poly,size1); 
             cout << endl;
             nextstep = Continue();
             if (nextstep == 1) goto PRINTPOLYNOMIAL;
@@ -219,7 +220,7 @@ void Menu()
                         cout << "You haven't calculate any triangle matrix" << endl;
                     else 
                     {
-                        saveMatrixToFile(triangle_matrix,size1,"result.txt", preChoice,col1,col2);
+                        saveMatrixToFile(triangle_matrix,size2,"result.txt", preChoice,col1,col2);
                         cout << "Saved to file: result.txt" << endl;
                     }
                     cout << "Press Enter to back to MENU" << endl;
@@ -300,7 +301,7 @@ void Menu()
                 case 2:
                 {
                     system("cls");
-                    cout << "Matrix 2: " << endl;
+                    cout << "Triangle Matrix : " << endl;
                     if (triangle_matrix[0][0] == (float)(float)TRASHVALUE)
                         cout << "You haven't calculate triangle matrix" << endl;
                     else printMatrix(triangle_matrix,size2);

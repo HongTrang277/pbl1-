@@ -53,7 +53,7 @@ void display_polynomial(POLYNOMIAL poly, int &size)  //s
     }
 }
 
-int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE],int size);
+int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE],int size1, float triangle_matrix[][MAX_SIZE], int size2);
 void PermuteRow(float matrix[][MAX_SIZE], int size, int row1, int row2);
 double CalculatePx(POLYNOMIAL poly, float x);
 
@@ -65,31 +65,39 @@ double CalculatePx(POLYNOMIAL poly, float x)
     return Px;
 }
 
-int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size)
+int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_matrix[][MAX_SIZE], int size2)
 {
     int i,j,k;
     float m;
-    for(i=0; i<size; i++)
+
+    size2= size1;
+    for(i=0; i<size2; i++) 
+    {
+        for(j=0; j<size2; j++) 
+            triangle_matrix[i][j] = matrix[i][j];
+    }
+
+    for(i=0; i<size2; i++)
     { 
-        if (matrix[i][i]==0)
+        if (triangle_matrix[i][i]==0)
         { 
-            for (k=1; k<=size; k++)
+            for (k=1; k<=size2; k++)
             {
-                if (matrix[k][i]!=0) 
+                if (triangle_matrix[k][i]!=0) 
                     break;
-                if (k==size)
+                if (k==size2)
                     return 1; // Case ma trận là ma trận tam giác trên sẵn
             }
-            PermuteRow(matrix, size, i, k);
-            if (k>size) 
+            PermuteRow(triangle_matrix, size2, i, k);
+            if (k>size2) 
                 return 0; // Case ?
         }
-    
-        for(j=i+1; j<=size; j++)
+
+        for(j=i+1; j<=size2; j++)
         { 
-            m = -matrix[j][i]/matrix[i][i];
-            for (k=i; k<=size+1; k++) 
-                matrix[j][k]+=matrix[i][k]*m;
+            m = -triangle_matrix[j][i]/triangle_matrix[i][i];
+            for (k=i; k<=size2+1; k++) 
+                triangle_matrix[j][k]+=triangle_matrix[i][k]*m;
         }
     }
     return 0;
