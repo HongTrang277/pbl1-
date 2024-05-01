@@ -76,7 +76,7 @@ int matrix_reader(string file, float matrix[][MAX_SIZE], int &size)
     return 2;
 }
 
-void saveMatrixToFile(float result[][MAX_SIZE], int size, string filename, int preChoice, int col1, int col2) 
+void saveMatrixToFile(float matrix[][MAX_SIZE], int size, string filename, int preChoice, int col1, int col2) 
 {
     ofstream file;
     file.open(filename, ios :: out | ios :: app);;
@@ -103,7 +103,7 @@ void saveMatrixToFile(float result[][MAX_SIZE], int size, string filename, int p
 		for (int i = 0; i < size; ++i) 
 		{
         	for (int j = 0; j < size+1; ++j) 
-            file << setw(8) << setprecision(3) << result[i][j];
+            file << setw(8) << setprecision(3) << matrix[i][j];
         file << endl;
     	}
     file.close();
