@@ -8,6 +8,7 @@ typedef struct polynomial {
     unsigned int high_power; //high_power=size
     int coeff_array [MAX_SIZE+1];
 } *POLYNOMIAL;
+
 void SumOfCols(float matrix[][MAX_SIZE],POLYNOMIAL poly, int &size) {
     int* coeff_ptr = poly->coeff_array;
     for(int i=0; i<=size; i++){
@@ -18,7 +19,7 @@ void SumOfCols(float matrix[][MAX_SIZE],POLYNOMIAL poly, int &size) {
     }
 }
 
-void display_polynomial(POLYNOMIAL poly, int &size)  //s
+void display_polynomial(POLYNOMIAL poly, int &size)  
 {
     poly->high_power=size;
     for(int i=0; i<=size; i++ ) {
