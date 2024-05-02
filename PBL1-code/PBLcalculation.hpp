@@ -73,7 +73,7 @@ int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_
     size2= size1;
     for(i=0; i<size2; i++) 
     {
-        for(j=0; j<size2; j++) 
+        for(j=0; j<=size2; j++) 
             triangle_matrix[i][j] = matrix[i][j];
     }
 
@@ -98,7 +98,7 @@ int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_
             m = -triangle_matrix[j][i]/triangle_matrix[i][i];
             for (k=i; k<=size2+1; k++) 
                 triangle_matrix[j][k]+=triangle_matrix[i][k]*m;
-        }
+           }
     }
     return 0;
 }

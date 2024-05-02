@@ -20,18 +20,19 @@ float console() {
         cout << "|   1. Input matrix manually                   |" << endl;
         cout << "|   2. Read matrix from file                   |" << endl;
         cout << "|   3. Turn into upper triangle matrix         |" << endl;
-        cout << "|   4. Print polynomial p(x) to terminal       |" << endl;
-        cout << "|   5. Calculate q(x)= SUM(p(xi))              |" << endl;
-        cout << "|   6. Save to file                            |" << endl;
-        cout << "|   7. Print matrix to terminal                |" << endl;
-        cout << "|   8. Close program                           |" << endl;
+        cout << "|   4. Solve upper triangle matrix             |" << endl;
+        cout << "|   5. Print polynomial p(x) to terminal       |" << endl;
+        cout << "|   6. Calculate q(x)= SUM(p(xi))              |" << endl;
+        cout << "|   7. Save to file                            |" << endl;
+        cout << "|   8. Print matrix to terminal                |" << endl;
+        cout << "|   9. Close program                           |" << endl;
         cout << "|                                              |" << endl;
         cout << "================================================" << endl;
         cout << "Choose your option: ";
         cin >> choose;
         cin.ignore(1000 , '\n');
 
-        if (!((choose == static_cast<int>(choose)) && (choose <= 8 && choose >= 1))) 
+        if (!((choose == static_cast<int>(choose)) && (choose <= 9 && choose >= 1))) 
         {
             system("cls");
             cout << endl << "Invalid input!" << endl;
@@ -39,7 +40,7 @@ float console() {
         else {
             break;
         }
-    } while (!((choose == static_cast<int>(choose)) && (choose <= 8 && choose >= 1)));
+    } while (!((choose == static_cast<int>(choose)) && (choose <= 9 && choose >= 1)));
     return choose;
 }
 
@@ -149,8 +150,28 @@ void Menu()
         }
         case 4:
         {
+            SolveTriangleMatrix:
+            system("cls");
+            if (triangle_matrix[0][0] == (float)TRASHVALUE)
+                cout << "You haven't calculate any triangle matrix" << endl;
+            else 
+            {
+                SolveTriangleMatrix(triangle_matrix, size2,resVector);
+                cout << "Triangle matrix solved !" << endl;
+            }
+            cout << "Press Enter to back to MENU" << endl;
+            cin.ignore(1000 , '\n');
+            cin.get();
+            goto MENU;
+            break;
+        }
+        case 5:
+        {
             PRINTPOLYNOMIAL:
             system("cls");
+            for (i =0; i<size1; i++)
+                for (int j=0; j<=size1; j++)
+                    poly->coeff_array[j]+=matrix[i][j];
             cout <<"Polynomial:"<<endl;
             display_polynomial(poly,size1); 
             cout << endl;
@@ -159,7 +180,7 @@ void Menu()
             if (nextstep == 2) goto MENU;
             break;
         }
-        case 5:
+        case 6:
         {
             CalculateQx:
             system("cls");
@@ -173,7 +194,7 @@ void Menu()
                     Qx += CalculatePx(poly,resVector[i]);
                 }
                 cout << " Result of Q(x) = SUM(P(xi)) with i=(1,n) :" << endl;
-                cout << setw(15) << setprecision(3) << Qx;
+                cout << setw(15) << setprecision(3) << Qx << endl;
             }
             cout << "Press Enter to back to MENU" << endl;
             cin.ignore(1000 , '\n');
@@ -181,7 +202,7 @@ void Menu()
             goto MENU;
             break;
         }
-        case 6:
+        case 7:
         {
             system("cls");
             cout << "======What do you want to save to file?======" << endl;
@@ -203,7 +224,8 @@ void Menu()
                         cout << "You haven't input a valid matrix" << endl;
                     else
                     {
-                        saveMatrixToFile(valid_matrix,size1,"result.txt", preChoice,col1,col2);
+                        preChoice = 0;
+                        saveMatrixToFile(valid_matrix,size1,"result.txt", preChoice);
                         cout << "Saved to file: result.txt" << endl;
                     }
                     cout << "Press Enter to back to MENU" << endl;
@@ -220,7 +242,8 @@ void Menu()
                         cout << "You haven't calculate any triangle matrix" << endl;
                     else 
                     {
-                        saveMatrixToFile(triangle_matrix,size2,"result.txt", preChoice,col1,col2);
+                        preChoice = 1;
+                        saveMatrixToFile(triangle_matrix,size2,"result.txt", preChoice);
                         cout << "Saved to file: result.txt" << endl;
                     }
                     cout << "Press Enter to back to MENU" << endl;
@@ -235,7 +258,7 @@ void Menu()
                     if (poly->high_power == 0)
                         cout << "You haven't input matrix" << endl;
                     else
-                    {
+                    {   preChoice = 2;
                         savepoly_resToFile(poly , resVector, size, "result.txt", preChoice);
                         cout << "Saved to file: result.txt" << endl;
                     }
@@ -252,7 +275,8 @@ void Menu()
                         cout << "You haven't solve linear Matrix" << endl;
                     else
                     {
-                        saveMatrixToFile(valid_matrix,size1,"result.txt", preChoice,col1,col2);
+                        preChoice = 3;
+                        savepoly_resToFile(poly , resVector, size, "result.txt", preChoice);
                         cout << "Saved to file: result.txt" << endl;
                     }
                     cout << "Press Enter to back to MENU" << endl;
@@ -271,7 +295,7 @@ void Menu()
             }
 
         }
-        case 7:
+        case 8:
         {
             PRINT:
             system("cls");

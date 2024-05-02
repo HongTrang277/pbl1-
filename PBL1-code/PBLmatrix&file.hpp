@@ -9,7 +9,7 @@ using namespace std;
 int matrix_reader(string file, float matrix[][MAX_SIZE], int &size);
 void inputMatrixManually(float matrix[][MAX_SIZE], int &size);
 void printMatrix(float matrix[MAX_SIZE][MAX_SIZE], int size);
-void saveMatrixToFile(float result[][MAX_SIZE], int size, string filename, int preChoice, int col1, int col2);
+void saveMatrixToFile(float result[][MAX_SIZE], int size, string filename, int preChoice);
 int SavedValidMatrices(float matrix1[][MAX_SIZE],int &size1,float target_matrix[][MAX_SIZE],int &size2);
 
 /*
@@ -76,7 +76,7 @@ int matrix_reader(string file, float matrix[][MAX_SIZE], int &size)
     return 2;
 }
 
-void saveMatrixToFile(float matrix[][MAX_SIZE], int size, string filename, int preChoice, int col1, int col2) 
+void saveMatrixToFile(float matrix[][MAX_SIZE], int size, string filename, int preChoice) 
 {
     ofstream file;
     file.open(filename, ios :: out | ios :: app);;
@@ -138,7 +138,7 @@ int SavedValidMatrices(float matrix1[][MAX_SIZE],int &size1,float target_matrix[
         size2= size1;
         for(i=0; i<size2; i++) 
         {
-            for(j=0; j<size2; j++) 
+            for(j=0; j<=size2; j++) 
                 target_matrix[i][j] = matrix1[i][j];
         }
         return 1; // Lưu ma trận thành công
