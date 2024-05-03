@@ -14,11 +14,11 @@ typedef struct polynomial {
 
 void SumOfCols(float matrix[][MAX_SIZE],POLYNOMIAL poly, int &size) {
     int* coeff_ptr = poly->coeff_array;
-    for(int i=0; i<=size; i++)
+    for(int i=0; i<=size+1; i++) // i là cột
     {
         coeff_ptr[i]=0;
-        for (int j = 0; j <=size+1; j++) {
-            coeff_ptr[j] += matrix[i][j];
+        for (int j = 0; j <=size; j++) {
+            coeff_ptr[i] += matrix[j][i];
         }
     }
 }
@@ -43,7 +43,7 @@ void display_polynomial(POLYNOMIAL poly, int &size)  //s
                 cout<<" - ";
             if(abs(poly->coeff_array[i])!=1)
                 cout<<abs(poly->coeff_array[i]);
-            if(abs(poly->coeff_array[i])!=1 && i == size-1)
+            if(abs(poly->coeff_array[i])==1 && i== size)
                 cout << 1;
             if(abs(poly->coeff_array[i])>0 && i<size){
                 cout<<"x";
