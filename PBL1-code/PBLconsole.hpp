@@ -60,11 +60,8 @@ void Menu()
     float resVector[MAX_SIZE];
     resVector[0]=(float)TRASHVALUE;
     double Qx;
-
-	int col1, col2;
 	
     POLYNOMIAL poly = new polynomial;
-    zero_polynomial(poly);
 
     int userChoice;
     int nextstep, preChoice= -1;
@@ -169,6 +166,7 @@ void Menu()
         {
             PRINTPOLYNOMIAL:
             system("cls");
+            zero_polynomial(poly);
             for (i =0; i<size1; i++)
                 for (int j=0; j<=size1; j++)
                     poly->coeff_array[j]+=matrix[i][j];
