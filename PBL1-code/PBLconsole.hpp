@@ -62,6 +62,7 @@ void Menu()
     double Qx;
 	
     POLYNOMIAL poly = new polynomial;
+    zero_polynomial(poly);
 
     int userChoice;
     int nextstep, preChoice= -1;

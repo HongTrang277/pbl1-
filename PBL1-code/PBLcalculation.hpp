@@ -43,7 +43,7 @@ void display_polynomial(POLYNOMIAL poly, int &size)  //s
                 cout<<" - ";
             if(abs(poly->coeff_array[i])!=1)
                 cout<<abs(poly->coeff_array[i]);
-            if(abs(poly->coeff_array[i])!=1 && i == size-1)
+            if(abs(poly->coeff_array[i])==1 && i == size)
                 cout << 1;
             if(abs(poly->coeff_array[i])>0 && i<size){
                 cout<<"x";
@@ -55,11 +55,11 @@ void display_polynomial(POLYNOMIAL poly, int &size)  //s
 
 int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE],int size1, float triangle_matrix[][MAX_SIZE], int size2);
 void PermuteRow(float matrix[][MAX_SIZE], int size, int row1, int row2);
-double CalculatePx(POLYNOMIAL poly, float x);
+float CalculatePx(POLYNOMIAL poly, float x);
 
-double CalculatePx(POLYNOMIAL poly, float x)
+float CalculatePx(POLYNOMIAL poly, float x)
 {
-    double Px=0;
+    float Px=0;
     for (int i = 0; i <=poly->high_power ; i++)
         Px+= pow(x,i)*poly->coeff_array[i];
     return Px;
@@ -163,7 +163,7 @@ void savepoly_resToFile(POLYNOMIAL poly,float resVector[MAX_SIZE], int size, str
                             file << " - ";
                         if(abs(poly->coeff_array[i])!=1)
                             file << abs(poly->coeff_array[i]);
-                        if(abs(poly->coeff_array[i])!=1 && i == size-1)
+                        if(abs(poly->coeff_array[i])==1 && i == size)
                             file << 1;
                         if(abs(poly->coeff_array[i])>0 && i<size){
                             file << "x";
@@ -178,7 +178,7 @@ void savepoly_resToFile(POLYNOMIAL poly,float resVector[MAX_SIZE], int size, str
             {
                 file << endl << "Result vector :" << endl;
                 for (int i =0 ; i <size; i++ )
-                    file << resVector[i];
+                    file << setw(8) << setprecision(3) << resVector[i] << " ";
                 file << endl;
                 break;            
             }
