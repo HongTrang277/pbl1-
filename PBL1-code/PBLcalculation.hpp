@@ -7,36 +7,39 @@
 using namespace std;
 
 int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE], int &preChoice);
-void PermuteRow(float matrix[][MAX_SIZE], int size, int row1, int row2, int &preChoice);
+void PermuteRow(float matrix[][MAX_SIZE], int size, int row1, int row2);
 // int CalculateQ();
-
 
 int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int &preChoice)
 {
-    int i,j,k,m;
+    int i,j,k;
+    float m;
     int size;
     for(i=1; i<size; i++)
     { 
         if (matrix[i][i]==0)
         { 
             for (k=2; k<=size; k++)
-            if (matrix[k][i]!=0) break;
-            PermuteRow(matrix, size, i, k , preChoice);
+            {
+                if (matrix[k][i]!=0) 
+                    break;
+            }
+            PermuteRow(matrix, size, i, k);
             if (k>size) 
-                return 1; // Case ?
-    }
+                return 0; // Case ?
+        }
     
         for(j=i+1; j<=size; j++)
         { 
             m = -matrix[j][i]/matrix[i][i];
             for (k=i; k<=size+1; k++) 
-                matrix[i][k]+=matrix[i][k]*m;
+                matrix[j][k]+=matrix[i][k]*m;
         }
     }
     return 0;
 }
 
-int SolveTriangleMatrix(float matrix[][MAX_SIZE], int size, float resVector[MAX_SIZE])
+void SolveTriangleMatrix(float matrix[][MAX_SIZE], int size, float resVector[MAX_SIZE])
 {
     int i,k;
     float sub;
@@ -48,7 +51,7 @@ int SolveTriangleMatrix(float matrix[][MAX_SIZE], int size, float resVector[MAX_
         }
 }
 
-void PermuteRow(float matrix[][MAX_SIZE], int size, int row1, int row2, int &preChoice)
+void PermuteRow(float matrix[][MAX_SIZE], int size, int row1, int row2)
 {
     int iARow, iACol;
     int tmp;
@@ -61,11 +64,10 @@ void PermuteRow(float matrix[][MAX_SIZE], int size, int row1, int row2, int &pre
     }
  
     // Duyệt theo cột
-    for (iACol = 0; iACol < size; iARow++)
+    for (iACol = 0; iACol < size +1 ; iACol++)
     {
         tmp = matrix[row1][iACol];
         matrix[row1][iACol] = matrix[row2][iACol];
         matrix[row2][iACol] = tmp;
     }
-    preChoice=2;
 }

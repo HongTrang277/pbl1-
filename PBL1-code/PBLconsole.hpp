@@ -2,6 +2,7 @@
 #include <fstream>
 #include "PBLcalculation.hpp"
 #include "PBLmatrix&file.hpp"
+#include <windows.h>
 #include "PBLpolynomial.hpp"
 
 using namespace std;
@@ -11,6 +12,17 @@ bool is_Vietnamese = true;
 int Continue();
 void Menu();
 
+void Color(int x)//X là mã màu (1-15)
+{
+     HANDLE h= GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(h, x);
+}
+
+void resetColor()
+{
+    Color(7);
+}
+ 
 float console() {
     float choose;
     do 
@@ -108,7 +120,7 @@ void Menu()
                 }
                 case 1:
                 {
-                    cout << endl << "Not a matrix of order (n,n+1)" << endl;
+                    cout << endl << "Invalid matrix" << endl;
                     break;
                 }
                 case 2:
@@ -139,7 +151,7 @@ void Menu()
             PRINTPOLYNOMIAL:
             system("cls");
             cout<<"Polynomial:"<<endl;
-            display_polynomial(poly,size);
+            display_polynomial(poly,size); // vector nghiệm sẽ là cái coeff_array[MAX_SIZE] á, tạo 1 cái biến POLYNOMIAL trỏ tới coeff_array là dc
             nextstep = Continue();
             if (nextstep == 1) goto PRINTPOLYNOMIAL;
             if (nextstep == 2) goto MENU;
