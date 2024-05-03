@@ -5,11 +5,11 @@ using namespace std;
 #define MAX_DEGREE 100
 typedef struct polynomial
 {
-    unsigned int high_power;
-    int coeff_array[MAX_DEGREE+1];
+    unsigned int high_power; // số nguyên không dấu, bậc cao nhất của đa thức
+    int coeff_array[MAX_DEGREE+1]; // mảng lưu các hệ số của thành phần đa thức
 } *POLYNOMIAL;
 
-void zero_polynomial ( POLYNOMIAL poly)
+void zero_polynomial ( POLYNOMIAL poly) // cho tất cả các hệ số và bậc cao nhất =0
 {
     for (int i =0; i <= MAX_DEGREE; i++)
         poly->coeff_array[i] =0;
