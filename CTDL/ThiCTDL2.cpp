@@ -31,6 +31,8 @@ void display_polynomial(POLYNOMIAL poly)
                 cout<<" - ";
             if(abs(poly->coeff_array[i])!=1)
                 cout<<abs(poly->coeff_array[i]);
+            if ( abs(poly->coeff_array[i])==1  && i== poly->high_power)
+                cout<<abs(poly->coeff_array[i]);
             if(abs(poly->coeff_array[i])>0 && i< poly->high_power){
                 cout<<"x";
                 if(i< poly->high_power-1) cout<<"^"<<poly->high_power - i;
@@ -64,6 +66,19 @@ void mult_polynomial (POLYNOMIAL poly1, POLYNOMIAL poly2, POLYNOMIAL poly_prod)
   }
 }
 
+void input_polynomial(POLYNOMIAL poly)
+{
+    zero_polynomial(poly);
+    cout << "Input high power :";
+    cin >> poly->high_power;
+    for (int i=0; i <= poly->high_power; i++)
+    {
+        cout << "Input expo " << poly->high_power -i << "coeff: ";
+        cin >> poly->coeff_array[i];
+        cout << endl; 
+    }
+}
+
 
 int main()
 {
@@ -78,10 +93,7 @@ int main()
     poly1->coeff_array[2]= 4;
     poly1->coeff_array[3]= 10;
 
-    poly2->high_power =3;
-    poly2->coeff_array[0]= 5;
-    poly2->coeff_array[1]= -3;
-    poly2->coeff_array[2]= 5;
+    input_polynomial(poly2);
 
     display_polynomial(poly1);
     display_polynomial(poly2);
@@ -91,5 +103,8 @@ int main()
     display_polynomial(poly_sum);
     cout << "multi: ";
     display_polynomial(poly_prod);
+    free(poly1);free(poly2);
+    free(poly_prod);
+    free(poly_sum);
     return 0;
 }

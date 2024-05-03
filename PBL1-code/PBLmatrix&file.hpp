@@ -9,8 +9,8 @@ using namespace std;
 int matrix_reader(string file, float matrix[][MAX_SIZE], int &size);
 void inputMatrixManually(float matrix[][MAX_SIZE], int &size);
 void printMatrix(float matrix[MAX_SIZE][MAX_SIZE], int size);
-void saveMatrixToFile(float result[][MAX_SIZE], int size, string filename, int preChoice, int col1, int col2);
-void dynamicallySavedMatrices(float matrix1[][MAX_SIZE],int &size1,float matrix2[][MAX_SIZE],int &size2,float matrix[][MAX_SIZE],int size);
+void saveMatrixToFile(float result[][MAX_SIZE], int size, string filename, int preChoice);
+int SavedValidMatrices(float matrix1[][MAX_SIZE],int &size1,float target_matrix[][MAX_SIZE],int &size2);
 
 /*
     hàm này đọc ma trận từ file text
@@ -76,7 +76,7 @@ int matrix_reader(string file, float matrix[][MAX_SIZE], int &size)
     return 2;
 }
 
-void saveMatrixToFile(float result[][MAX_SIZE], int size, string filename, int preChoice, int col1, int col2) 
+void saveMatrixToFile(float matrix[][MAX_SIZE], int size, string filename, int preChoice) 
 {
     ofstream file;
     file.open(filename, ios :: out | ios :: app);;
@@ -91,24 +91,19 @@ void saveMatrixToFile(float result[][MAX_SIZE], int size, string filename, int p
         {
             case 0:
             {
-                file << endl << "Multiplication matrix  :" << endl;
+                file << endl << "Linear matrix equation:" << endl; // Lưu ma trận hệ số tuyến tính vào file
                 break;
             }
             case 1:
             {
-                file << endl << "Summation matrix:" << endl;
-                break;            
-            }
-            case 2:
-            {
-                file << endl << "Previous result matrix that has permute collumn " << col1 << " and " << col2 << ":" << endl;
+                file << endl << "Upper triangle matrix:" << endl; // Ma trận tam giác trên
                 break;            
             }
         }
 		for (int i = 0; i < size; ++i) 
 		{
         	for (int j = 0; j < size+1; ++j) 
-            file << setw(8) << setprecision(3) << result[i][j];
+            file << setw(8) << setprecision(3) << matrix[i][j];
         file << endl;
     	}
     file.close();
@@ -135,3 +130,18 @@ void printMatrix(float matrix[MAX_SIZE][MAX_SIZE], int size)
 	}
 }
 
+int SavedValidMatrices(float matrix1[][MAX_SIZE],int &size1,float target_matrix[][MAX_SIZE],int &size2)
+{
+    int i, j;
+    if (matrix1[0][0] != (float)TRASHVALUE)
+	{
+        size2= size1;
+        for(i=0; i<size2; i++) 
+        {
+            for(j=0; j<=size2; j++) 
+                target_matrix[i][j] = matrix1[i][j];
+        }
+        return 1; // Lưu ma trận thành công
+    }
+    return 0; // không có ma trận 1
+}
