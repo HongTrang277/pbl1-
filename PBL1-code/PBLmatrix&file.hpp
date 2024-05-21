@@ -113,11 +113,13 @@ void saveMatrixToFile(float matrix[][MAX_SIZE], int size, string filename, int p
 void inputMatrixManually(float matrix[][MAX_SIZE], int &size)
 {
     cout << endl << "Input matrix manually:" << endl;
-    cout << "Input matrix size:";
+    cout << "Input matrix rows size:";
     cin >> size;
     for (int i = 0 ; i < size; i++ )
-        for (int j = 0 ; j < size + 1; j++)
+        for (int j = 0 ; j < size + 1; j++){
+            cout<<"matrix["<<i<<"]["<<j<<"]";
             cin >> matrix[i][j];
+        }
 }
 
 void printMatrix(float matrix[MAX_SIZE][MAX_SIZE], int size) 

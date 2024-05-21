@@ -187,7 +187,7 @@ void Menu()
                 }
                 case 1:
                 {
-                    cout << endl << "Invalid matrix" << endl;
+                    cout << endl << "Number of rows and columns that do not fit the matrix [n,n+1]" << endl;
                     break;
                 }
                 case 2:

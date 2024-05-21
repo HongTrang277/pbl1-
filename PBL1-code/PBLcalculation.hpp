@@ -60,8 +60,8 @@ float CalculatePx(POLYNOMIAL poly, float x);
 float CalculatePx(POLYNOMIAL poly, float x)
 {
     float Px=0;
-    for (int i = 0; i <=poly->high_power ; i++)
-        Px+= pow(x,i)*poly->coeff_array[i];
+    for (int i = 0; i <=poly->high_power ; i++) //i<=4
+        Px+= pow(x,i)*poly->coeff_array[poly->high_power-i]; //
     return Px;
 }
 
