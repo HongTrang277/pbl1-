@@ -43,7 +43,7 @@ void display_polynomial(POLYNOMIAL poly, int &size)  //s
                 cout<<" - ";
             if(abs(poly->coeff_array[i])!=1)
                 cout<<abs(poly->coeff_array[i]);
-            if(abs(poly->coeff_array[i])==1 && i== size)
+            if(abs(poly->coeff_array[i])==1 && i == size)
                 cout << 1;
             if(abs(poly->coeff_array[i])>0 && i<size){
                 cout<<"x";
@@ -55,26 +55,56 @@ void display_polynomial(POLYNOMIAL poly, int &size)  //s
 
 int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE],int size1, float triangle_matrix[][MAX_SIZE], int size2);
 void PermuteRow(float matrix[][MAX_SIZE], int size, int row1, int row2);
-double CalculatePx(POLYNOMIAL poly, float x);
+float CalculatePx(POLYNOMIAL poly, float x);
 
-double CalculatePx(POLYNOMIAL poly, float x)
+float CalculatePx(POLYNOMIAL poly, float x)
 {
-    double Px=0;
+    float Px=0;
     for (int i = 0; i <=poly->high_power ; i++)
         Px+= pow(x,i)*poly->coeff_array[i];
     return Px;
+}
+
+bool hasAtLeastOneZeroRow(float matrix[][MAX_SIZE], int size) {
+  // Iterate through each row
+  for (int i = 0; i < size; i++) {
+    bool allZero = true;
+
+    // Check if all elements in the row are zero
+    for (int j = 0; j <= size; j++) {
+      if (matrix[i][j] != 0) {
+        allZero = false;
+        break;
+      }
+    }
+
+    // If a row is all zeros, return true (at least one found)
+    if (allZero) {
+      return true;
+    }
+  }
+
+  // No zero rows found
+  return false;
 }
 
 int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_matrix[][MAX_SIZE], int size2)
 {
     int i,j,k;
     float m;
-
+    int o, p;
     size2= size1;
     for(i=0; i<size2; i++) 
     {
         for(j=0; j<=size2; j++) 
             triangle_matrix[i][j] = matrix[i][j];
+    }
+
+    for (o=0; o<size2; o++) 
+    {
+        for(p=0; p<size2 + 1; p++) 
+            cout << setw(8) << setprecision(3) << triangle_matrix[o][p];
+        cout<<endl;
     }
 
     for(i=0; i<size2; i++)
@@ -88,6 +118,8 @@ int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_
                 if (k==size2)
                     return 1; // Case ma trận là ma trận tam giác trên sẵn
             }
+            //fix here
+            cout << endl << " Permute row " << i+1 << " & " << k+1 << endl;
             PermuteRow(triangle_matrix, size2, i, k);
             if (k>size2) 
                 return 0; // Case ?
@@ -96,23 +128,41 @@ int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_
         for(j=i+1; j<=size2; j++)
         { 
             m = -triangle_matrix[j][i]/triangle_matrix[i][i];
-            for (k=i; k<=size2+1; k++) 
-                triangle_matrix[j][k]+=triangle_matrix[i][k]*m;
-           }
+            if (m)
+            {    
+                cout << endl << "Row " << j+1 ;
+                if (m>0)
+                    cout << " + ";
+                else
+                    cout << " - ";
+                cout << abs(m) << "*" << "Row " << i+1 << " ->" << " Row " << j+1 << endl;
+                for (k=i; k<=size2+1; k++) 
+                    triangle_matrix[j][k]+=triangle_matrix[i][k]*m;
+                for (o=0; o<size2; o++) 
+                {
+                    for(p=0; p<size2 + 1; p++) 
+                        cout << setw(8) << setprecision(3) << triangle_matrix[o][p];
+                    cout<<endl;
+                }
+            }
+        }
     }
     return 0;
 }
 
-void SolveTriangleMatrix(float triangle_matrix[][MAX_SIZE], int size, float resVector[MAX_SIZE])
+int SolveTriangleMatrix(float triangle_matrix[][MAX_SIZE], int size, float resVector[MAX_SIZE])
 {
+    if (hasAtLeastOneZeroRow(triangle_matrix,size))
+        return 0;
     int i,k;
     float sub;
     for(i=size-1; i>=0; i--)
         { 
-            sub=triangle_matrix[i][size+1];
-            for (k=i+1; k<=size; k++) sub-=triangle_matrix[i][k]*resVector[k];
+            sub=triangle_matrix[i][size];
+            for (k=i+1; k<size; k++) sub-=triangle_matrix[i][k]*resVector[k];
             if (triangle_matrix[i][i]!=0) resVector[i] = sub/triangle_matrix[i][i];
         }
+    return 1;
 }
 
 void PermuteRow(float matrix[][MAX_SIZE], int size, int row1, int row2)
@@ -163,7 +213,7 @@ void savepoly_resToFile(POLYNOMIAL poly,float resVector[MAX_SIZE], int size, str
                             file << " - ";
                         if(abs(poly->coeff_array[i])!=1)
                             file << abs(poly->coeff_array[i]);
-                        if(abs(poly->coeff_array[i])!=1 && i == size-1)
+                        if(abs(poly->coeff_array[i])==1 && i == size)
                             file << 1;
                         if(abs(poly->coeff_array[i])>0 && i<size){
                             file << "x";
@@ -178,7 +228,7 @@ void savepoly_resToFile(POLYNOMIAL poly,float resVector[MAX_SIZE], int size, str
             {
                 file << endl << "Result vector :" << endl;
                 for (int i =0 ; i <size; i++ )
-                    file << resVector[i];
+                    file << setw(8) << setprecision(3) << resVector[i] << " ";
                 file << endl;
                 break;            
             }
