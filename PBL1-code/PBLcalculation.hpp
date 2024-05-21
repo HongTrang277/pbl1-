@@ -130,7 +130,12 @@ int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_
             m = -triangle_matrix[j][i]/triangle_matrix[i][i];
             if (m)
             {    
-                cout << endl << "Row " << j+1 << " + " << "Row " << i+1 << "*" << m << " ->" << " Row " << j+1 << endl;
+                cout << endl << "Row " << j+1 ;
+                if (m>0)
+                    cout << " + ";
+                else
+                    cout << " - ";
+                cout << abs(m) << "*" << "Row " << i+1 << " ->" << " Row " << j+1 << endl;
                 for (k=i; k<=size2+1; k++) 
                     triangle_matrix[j][k]+=triangle_matrix[i][k]*m;
                 for (o=0; o<size2; o++) 

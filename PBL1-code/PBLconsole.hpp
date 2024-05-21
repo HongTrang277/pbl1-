@@ -267,7 +267,7 @@ void Menu()
             {
                 if (SolveTriangleMatrix(triangle_matrix, size2,resVector) == 0)
                 {
-                    cout << "Impossible equation!";
+                    cout << "Impossible equation!" << endl;
                 }
                 else
                 {
@@ -328,7 +328,12 @@ void Menu()
             CalculateQx:
             system("cls");
             if (resVector[0] == (float)TRASHVALUE)
-                        cout << "You haven't calculate anything" << endl;
+            {
+                if (SolveTriangleMatrix(triangle_matrix, size2,resVector) == 0)
+                    cout << " Impossible matrix , can not calculate without result vector!" << endl;
+                else
+                    cout << "You haven't calculate anything" << endl;
+            }
             else
             {
                 Qx = 0;
