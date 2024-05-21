@@ -65,6 +65,29 @@ float CalculatePx(POLYNOMIAL poly, float x)
     return Px;
 }
 
+bool hasAtLeastOneZeroRow(float matrix[][MAX_SIZE], int size) {
+  // Iterate through each row
+  for (int i = 0; i < size; i++) {
+    bool allZero = true;
+
+    // Check if all elements in the row are zero
+    for (int j = 0; j <= size; j++) {
+      if (matrix[i][j] != 0) {
+        allZero = false;
+        break;
+      }
+    }
+
+    // If a row is all zeros, return true (at least one found)
+    if (allZero) {
+      return true;
+    }
+  }
+
+  // No zero rows found
+  return false;
+}
+
 int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_matrix[][MAX_SIZE], int size2)
 {
     int i,j,k;
@@ -75,6 +98,13 @@ int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_
     {
         for(j=0; j<=size2; j++) 
             triangle_matrix[i][j] = matrix[i][j];
+    }
+
+    for (o=0; o<size2; o++) 
+    {
+        for(p=0; p<size2 + 1; p++) 
+            cout << setw(8) << setprecision(3) << triangle_matrix[o][p];
+        cout<<endl;
     }
 
     for(i=0; i<size2; i++)
@@ -117,7 +147,7 @@ int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_
 
 int SolveTriangleMatrix(float triangle_matrix[][MAX_SIZE], int size, float resVector[MAX_SIZE])
 {
-    if (triangle_matrix[size-1][size] == 0)
+    if (hasAtLeastOneZeroRow(triangle_matrix,size))
         return 0;
     int i,k;
     float sub;

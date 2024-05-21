@@ -11,6 +11,29 @@ int Continue();
 int savePermit();
 void Menu();
 
+void Intro()
+{
+    system("cls");  
+    cout << endl;
+        cout << "==============================================================================================" << endl;
+        cout << "|                                         | NHÓM 8 |                                          |" << endl;
+        cout << "|                                         ĐỀ TÀI 901                                          |" << endl;
+        cout << "|                      Tìm nghiệm của hệ phương trình đại số tuyến tính                       |" << endl;
+        cout << "|                       bằng phương pháp tự chọn ( Phương pháp Gauss )                        |" << endl;
+        cout << "|---------------------------------------------------------------------------------------------|" << endl;
+        cout << "|                   Mô tả                     |              Sinh viên thực hiện              |" << endl;
+        cout << "|---------------------------------------------------------------------------------------------|" << endl;
+        cout << "|                                             |                                               |" << endl;
+        cout << "| - Đọc dữ liệu ma trận từ bàn phím hoặc file |           -------------------------           |" << endl;
+        cout << "|   trên và thể hiện các bước biến đổi        |           |   Phan Thanh Trường   |           |" << endl;
+        cout << "| - Giải ma trận tam giác trên bằng quá trình |           -------------------------           |" << endl;
+        cout << "|   ngược, in ra vecto nghiệm, in ra đa thức  |                                               |" << endl;
+        cout << "|   p(x) có các hệ số bằng tổng các cột       |           -------------------------           |" << endl;
+        cout << "| - Tính Q(x) = Sum (p(xi)) với xi là nghiệm  |           | Nguyễn Thị Hồng Trang |           |" << endl;
+        cout << "| - Lưu các dữ liệu vào file                  |           -------------------------           |" << endl;
+        cout << "|                                             |                                               |" << endl;
+        cout << "==============================================================================================" << endl;
+}
 float console() {
     float choose;
     do 
@@ -121,13 +144,44 @@ void Menu()
         {
             READFILE:
             system("cls");
-            cout << "Name the file that contains input matrix: ";
+            cout << "======= Choose input method =======" << endl;
+            cout << "|                                  |" << endl;
+            cout << "|   1. Input file name             |" << endl;
+            cout << "|   2. Input direct path           |" << endl;
+            cout << "|                                  |" << endl;
+            cout << "===================================" << endl;
+            cout << "Choose your option: ";
+            cin >> userChoice;
+            cin.ignore(1000 , '\n');
+            cin.get();
+            switch (userChoice)
+            {
+                case 1:
+                {
+                    cout << "Name the file that contains input matrix: ";
+                    preChoice = 9;
+                    break;
+                }
+                case 2:
+                {
+                    cout << "Input direct path leads to the file : ";
+                    preChoice = 10;
+                    break;
+                }
+                default:
+                {    
+                    cout << " Not a choice?";
+                }
+            }
 	        getline(cin, fileName);
             switch (matrix_reader(fileName, matrix, size))
             {
                 case 0:
                 {
-                    cout << endl << "Unable to open file/file doesn't exist in the same folder" << endl;
+                    if (preChoice == 9)
+                        cout << endl << "File doesn't exist in the same folder" << endl;
+                    if (preChoice == 10)
+                        cout << endl << "Unable to open file" << endl;
                     break;
                 }
                 case 1:
