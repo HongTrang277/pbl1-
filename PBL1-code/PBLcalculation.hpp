@@ -14,10 +14,10 @@ typedef struct polynomial {
 
 void SumOfCols(float matrix[][MAX_SIZE],POLYNOMIAL poly, int &size) {
     int* coeff_ptr = poly->coeff_array;
-    for(int i=0; i<=size+1; i++) // i là cột
+    for(int i=0; i<size+1; i++) // i là cột, thì 0-n là n+1 cột rồi nè
     {
         coeff_ptr[i]=0;
-        for (int j = 0; j <=size; j++) {
+        for (int j = 0; j <size; j++) {
             coeff_ptr[i] += matrix[j][i];
         }
     }
