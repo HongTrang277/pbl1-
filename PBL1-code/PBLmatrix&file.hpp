@@ -117,7 +117,7 @@ void inputMatrixManually(float matrix[][MAX_SIZE], int &size)
     cin >> size;
     for (int i = 0 ; i < size; i++ )
         for (int j = 0 ; j < size + 1; j++){
-            cout<<"matrix["<<i<<"]["<<j<<"]";
+            cout<<"matrix["<<i<<"]["<<j<<"]: ";
             cin >> matrix[i][j];
         }
 }

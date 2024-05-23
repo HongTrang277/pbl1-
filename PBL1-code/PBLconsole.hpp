@@ -339,7 +339,7 @@ void Menu()
             else
             {
                 Qx = 0;
-                for (i = size1; i>=1; i--)
+                for (i = size1-1; i>=0; i--)
                 {
                     Qx += CalculatePx(poly,resVector[i]);
                 }

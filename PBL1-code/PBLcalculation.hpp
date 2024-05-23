@@ -32,7 +32,7 @@ void zero_polynomial ( POLYNOMIAL poly) // cho tất cả các hệ số và b�
 
 void display_polynomial(POLYNOMIAL poly, int &size)  //s
 {
-    poly->high_power=size;
+    poly->high_power=size; //poly->high_power = rows 
     for(int i=0; i<=size; i++ ) 
     {
         if(poly->coeff_array[i]!=0)
@@ -61,9 +61,16 @@ float CalculatePx(POLYNOMIAL poly, float x)
 {
     float Px=0;
     for (int i = 0; i <=poly->high_power ; i++) //i<=4
-        Px+= pow(x,i)*poly->coeff_array[poly->high_power-i]; //
+        Px+= pow(x,i)*poly->coeff_array[poly->high_power-i]; //coeff_array[3]
     return Px;
 }
+/*
+    i=0, x^0 * coeff_array[4]
+    i=1, x^1 * coeff_array[3]
+    i=2, x^2 * coeff_array[2]
+    i=3, x^3 * coeff_array[1]
+    i=4, x^4 * coeff_array[0]
+*/
 
 bool hasAtLeastOneZeroRow(float matrix[][MAX_SIZE], int size) {
   // Iterate through each row
@@ -156,7 +163,7 @@ int SolveTriangleMatrix(float triangle_matrix[][MAX_SIZE], int size, float resVe
         return 0;
     int i,k;
     float sub;
-    for(i=size-1; i>=0; i--)
+    for(i=size-1; i>=0; i--) //i=3, 
         { 
             sub=triangle_matrix[i][size];
             for (k=i+1; k<size; k++) sub-=triangle_matrix[i][k]*resVector[k];
