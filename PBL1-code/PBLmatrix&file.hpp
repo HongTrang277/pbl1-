@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include <fstream>
+#include <string.h>
 
 #define MAX_SIZE 100
 #define TRASHVALUE 12345.6789
@@ -40,13 +41,13 @@ int matrix_reader(string file, float matrix[][MAX_SIZE], int &size)
         {
             // Nếu là chữ thì không hợp lệ
             if ((line[t] >= 'a' && line[t]<= 'z') || (line[t]>= 'A' && line[t]<= 'Z'))
-                return 1;
+                return 3;
             // Đếm số dấu chấm của số thập phân
             if (line[t] == '.')
             {
                 dotCount ++;
                 if (dotCount > 1 )
-                    return 1;
+                    return 3;
             }
             // Nếu không phải dấu cách thì nối vào element
             if (line[t] != ' ')
@@ -55,6 +56,9 @@ int matrix_reader(string file, float matrix[][MAX_SIZE], int &size)
             }
             if (line[t] == ' ' || t == line.length() - 1)
             {
+                // chua fix
+                // if (line[t-1] == ' ') 
+                //     continue;  
                 // Hàm atof nhận vào biến kiểu char* và chuyển về kiểu double, nên cần dùng .c_str() để chuyển từ string về char*
                 matrix[rows][cols] = static_cast<float>(atof(element.c_str()));
                 cols++;

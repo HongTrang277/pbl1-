@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 #include <fstream>
 #include <math.h>
-#include <stdlib.h>
 #include <string>
+#include <Windows.h>
 
 #define MAX_SIZE 100
 using namespace std;
@@ -57,6 +57,18 @@ int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE],int size1, float triangle_ma
 void PermuteRow(float matrix[][MAX_SIZE], int size, int row1, int row2);
 float CalculatePx(POLYNOMIAL poly, float x);
 
+
+
+
+
+
+
+
+
+
+
+
+//Check again later
 float CalculatePx(POLYNOMIAL poly, float x)
 {
     float Px=0;
@@ -73,6 +85,7 @@ float CalculatePx(POLYNOMIAL poly, float x)
 */
 
 bool hasAtLeastOneZeroRow(float matrix[][MAX_SIZE], int size) {
+
   // Iterate through each row
   for (int i = 0; i < size; i++) {
     bool allZero = true;
@@ -93,6 +106,33 @@ bool hasAtLeastOneZeroRow(float matrix[][MAX_SIZE], int size) {
 
   // No zero rows found
   return false;
+}
+
+bool hasAtLeastOneZeroRowExceptLast(float matrix[][MAX_SIZE], int size) 
+{
+    int i,j;
+    // Iterate through each row
+    for (i = 0; i < size; i++) 
+    {
+        bool allZero = true;
+
+        // Check if all elements in the row are zero
+        for (j = 0; j < size; j++) 
+        {
+            if (matrix[i][j] != 0) 
+            {
+                allZero = false;
+                break;
+            }
+        }
+
+        // If a row is all zeros, return true (at least one found)
+        if (allZero && matrix[i][j+1] !=0) 
+            return true;
+    }
+
+    // No zero rows found
+    return false;
 }
 
 int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_matrix[][MAX_SIZE], int size2)
@@ -126,7 +166,7 @@ int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_
                     return 1; // Case ma trận là ma trận tam giác trên sẵn
             }
             //fix here
-            cout << endl << " Permute row " << i+1 << " & " << k+1 << endl;
+            cout << endl << "Permute row " << i+1 << " & " << k+1 << endl;
             PermuteRow(triangle_matrix, size2, i, k);
             if (k>size2) 
                 return 0; // Case ?
@@ -142,7 +182,9 @@ int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_
                     cout << " + ";
                 else
                     cout << " - ";
-                cout << abs(m) << "*" << "Row " << i+1 << " ->" << " Row " << j+1 << endl;
+                if (abs(m) != 1)
+                    cout << abs(m) << "*";
+                cout << "Row " << i+1 << " ->" << " Row " << j+1 << endl;
                 for (k=i; k<=size2+1; k++) 
                     triangle_matrix[j][k]+=triangle_matrix[i][k]*m;
                 for (o=0; o<size2; o++) 
@@ -159,6 +201,8 @@ int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_
 
 int SolveTriangleMatrix(float triangle_matrix[][MAX_SIZE], int size, float resVector[MAX_SIZE])
 {
+    if (hasAtLeastOneZeroRowExceptLast(triangle_matrix,size))
+        return 2;
     if (hasAtLeastOneZeroRow(triangle_matrix,size))
         return 0;
     int i,k;
