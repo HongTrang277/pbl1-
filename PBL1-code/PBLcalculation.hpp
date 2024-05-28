@@ -84,57 +84,6 @@ float CalculatePx(POLYNOMIAL poly, float x)
     i=4, x^4 * coeff_array[0]
 */
 
-bool hasAtLeastOneZeroRow(float matrix[][MAX_SIZE], int size) {
-
-  // Iterate through each row
-  for (int i = 0; i < size; i++) {
-    bool allZero = true;
-
-    // Check if all elements in the row are zero
-    for (int j = 0; j <= size; j++) {
-      if (matrix[i][j] != 0) {
-        allZero = false;
-        break;
-      }
-    }
-
-    // If a row is all zeros, return true (at least one found)
-    if (allZero) {
-      return true;
-    }
-  }
-
-  // No zero rows found
-  return false;
-}
-
-bool hasAtLeastOneZeroRowExceptLast(float matrix[][MAX_SIZE], int size) 
-{
-    int i,j;
-    // Iterate through each row
-    for (i = 0; i < size; i++) 
-    {
-        bool allZero = true;
-
-        // Check if all elements in the row are zero
-        for (j = 0; j < size; j++) 
-        {
-            if (matrix[i][j] != 0) 
-            {
-                allZero = false;
-                break;
-            }
-        }
-
-        // If a row is all zeros, return true (at least one found)
-        if (allZero && matrix[i][j+1] !=0) 
-            return true;
-    }
-
-    // No zero rows found
-    return false;
-}
-
 int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_matrix[][MAX_SIZE], int size2)
 {
     int i,j,k;
@@ -166,7 +115,7 @@ int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_
                     return 1; // Case ma trận là ma trận tam giác trên sẵn
             }
             //fix here
-            cout << endl << "Permute row " << i+1 << " & " << k+1 << endl;
+            cout << endl << "Đổi dòng " << i+1 << " & " << k+1 << endl;
             PermuteRow(triangle_matrix, size2, i, k);
             if (k>size2) 
                 return 0; // Case ?
@@ -177,14 +126,14 @@ int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_
             m = -triangle_matrix[j][i]/triangle_matrix[i][i];
             if (m)
             {    
-                cout << endl << "Row " << j+1 ;
+                cout << endl << "Dòng " << j+1 ;
                 if (m>0)
                     cout << " + ";
                 else
                     cout << " - ";
                 if (abs(m) != 1)
                     cout << abs(m) << "*";
-                cout << "Row " << i+1 << " ->" << " Row " << j+1 << endl;
+                cout << "Dòng " << i+1 << " ->" << " Dòng " << j+1 << endl;
                 for (k=i; k<=size2+1; k++) 
                     triangle_matrix[j][k]+=triangle_matrix[i][k]*m;
                 for (o=0; o<size2; o++) 
@@ -199,12 +148,52 @@ int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE] , int size1 ,float triangle_
     return 0;
 }
 
+int findCases(float triangle_matrix[][MAX_SIZE], int size) 
+{   
+    int countA=0, countAx=0;
+    //Check A
+    for (int i = 0; i < size; i++) 
+    {
+        bool allZero = true;
+        for (int j = i; j < size; j++) 
+        { // Check elements after diagonal
+            if (triangle_matrix[i][j] != 0.0f) 
+            {
+                allZero = false;
+            break;
+            }
+        }
+        if (allZero)
+            countA++;
+    }
+    //Check Ax
+    for (int i = 0; i < size; i++) 
+    {
+        bool allZero = true;
+        for (int j = i; j <= size; j++) 
+        { // Check elements after diagonal
+            if (triangle_matrix[i][j] != 0.0f) 
+            {
+                allZero = false;
+            break;
+            }
+        }
+        if (allZero)
+            countAx++;
+    }
+    if (countA == countAx && countA>0)
+        return 0;
+    if (countA == countAx && countA==0)
+        return 1;
+    return 2;
+}
+
 int SolveTriangleMatrix(float triangle_matrix[][MAX_SIZE], int size, float resVector[MAX_SIZE])
 {
-    if (hasAtLeastOneZeroRowExceptLast(triangle_matrix,size))
-        return 2;
-    if (hasAtLeastOneZeroRow(triangle_matrix,size))
-        return 0;
+    if (findCases(triangle_matrix,size) == 0)
+        return 0; // Có vô số nghiệm
+    if (findCases(triangle_matrix,size) == 2)
+        return 2; // Vô nghiệm
     int i,k;
     float sub;
     for(i=size-1; i>=0; i--) //i=3, 
