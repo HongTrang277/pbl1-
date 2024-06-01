@@ -83,7 +83,7 @@ int matrix_reader(string file, float matrix[][MAX_SIZE], int &size)
 void saveMatrixToFile(float matrix[][MAX_SIZE], int size, string filename, int preChoice) 
 {
     ofstream file;
-    file.open(filename, ios :: out | ios :: app);;
+    file.open(filename, ios :: out | ios :: app);
     if (!file.is_open()) 
 	{
         cout << endl <<  "Không thể mở file để nhập kết quả" <<endl;
@@ -95,12 +95,12 @@ void saveMatrixToFile(float matrix[][MAX_SIZE], int size, string filename, int p
         {
             case 0:
             {
-                file << endl << "Linear matrix equation:" << endl; // Lưu ma trận hệ số tuyến tính vào file
+                file << endl << "Ma trận hệ số:" << endl; // Lưu ma trận hệ số tuyến tính vào file
                 break;
             }
             case 1:
             {
-                file << endl << "Upper triangle matrix:" << endl; // Ma trận tam giác trên
+                file << endl << "Ma trận sau khi biến đổi:" << endl; // Ma trận tam giác trên
                 break;            
             }
         }
@@ -116,12 +116,12 @@ void saveMatrixToFile(float matrix[][MAX_SIZE], int size, string filename, int p
 
 void inputMatrixManually(float matrix[][MAX_SIZE], int &size)
 {
-    cout << endl << "Input matrix manually:" << endl;
-    cout << "Input matrix rows size:";
+    cout << endl << "Nhập ma trận từ bàn phím:" << endl;
+    cout << "Nhập vào số ẩn phương trình:";
     cin >> size;
     for (int i = 0 ; i < size; i++ )
         for (int j = 0 ; j < size + 1; j++){
-            cout<<"matrix["<<i<<"]["<<j<<"]: ";
+            cout<<"Matrix["<<i<<"]["<<j<<"]: ";
             cin >> matrix[i][j];
         }
 }

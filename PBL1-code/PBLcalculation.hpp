@@ -57,18 +57,6 @@ int TurnIntoTriangleMatrix(float matrix[][MAX_SIZE],int size1, float triangle_ma
 void PermuteRow(float matrix[][MAX_SIZE], int size, int row1, int row2);
 float CalculatePx(POLYNOMIAL poly, float x);
 
-
-
-
-
-
-
-
-
-
-
-
-//Check again later
 float CalculatePx(POLYNOMIAL poly, float x)
 {
     float Px=0;
@@ -241,7 +229,7 @@ void savepoly_resToFile(POLYNOMIAL poly,float resVector[MAX_SIZE], int size, str
         {
             case 2:
             {
-                file << endl << "Polinomial P(x):" << endl;
+                file << endl << "Đa thức P(x):" << endl;
                 poly->high_power=size;
                 for(int i=0; i<=size; i++ ) 
                 {
@@ -266,7 +254,7 @@ void savepoly_resToFile(POLYNOMIAL poly,float resVector[MAX_SIZE], int size, str
             }
             case 3:
             {
-                file << endl << "Result vector :" << endl;
+                file << endl << "Vector nghiệm :" << endl;
                 for (int i =0 ; i <size; i++ )
                     file << setw(8) << setprecision(3) << resVector[i] << " ";
                 file << endl;

@@ -6,6 +6,7 @@
 using namespace std;
 
 int Continue();
+int savechoice();
 int savePermit();
 void Menu();
 
@@ -47,19 +48,18 @@ float console() {
         cout << "║                                                ║ " << endl;
         cout << "║    1. Nhập ma trận bằng tay                    ║ " << endl;
         cout << "║    2. Đọc ma trận từ file                      ║ " << endl;
-        cout << "║    3. Biến đổi thành ma trận tam giác          ║ " << endl;
-        cout << "║    4. Giải ma trận tam giác trên               ║ " << endl;
-        cout << "║    5. In đa thức P(x) ra màn hình              ║ " << endl;
-        cout << "║    6. Tính Q(x)= SUM(p(xi))                    ║ " << endl;
-        cout << "║    7. Lưu vào file                             ║ " << endl;
-        cout << "║    8. Đóng chương trình                        ║ " << endl;
+        cout << "║    3. Biến đổi ma trận và giải nghiệm          ║ " << endl;
+        cout << "║    4. In đa thức P(x) ra màn hình              ║ " << endl;
+        cout << "║    5. Tính Q(x)= SUM(p(xi))                    ║ " << endl;
+        cout << "║    6. Lưu vào file                             ║ " << endl;
+        cout << "║    7. Đóng chương trình                        ║ " << endl;
         cout << "║                                                ║ " << endl;
         cout << "╚════════════════════════════════════════════════╝" << endl;
         cout << "Mời bạn đưa ra lựa chọn: ";
         cin >> choose;
         cin.ignore(1000 , '\n');
 
-        if (!((choose == static_cast<int>(choose)) && (choose <= 8 && choose >= 1))) 
+        if (!((choose == static_cast<int>(choose)) && (choose <= 7 && choose >= 1))) 
         {
             system("cls");
             cout << endl << "Lựa chọn không hợp lệ!" << endl;
@@ -67,7 +67,7 @@ float console() {
         else {
             break;
         }
-    } while (!((choose == static_cast<int>(choose)) && (choose <= 8 && choose >= 1)));
+    } while (!((choose == static_cast<int>(choose)) && (choose <= 7 && choose >= 1)));
     return choose;
 }
 
@@ -79,6 +79,8 @@ void Menu()
 
 	string fileName;
 
+    ofstream filesave;
+
     float matrix[MAX_SIZE][MAX_SIZE];
 	float valid_matrix[MAX_SIZE][MAX_SIZE];
     valid_matrix[0][0]=(float)TRASHVALUE;
@@ -86,7 +88,7 @@ void Menu()
     triangle_matrix[0][0]=(float)TRASHVALUE;
     float resVector[MAX_SIZE];
     resVector[0]=(float)TRASHVALUE;
-    double Qx;
+    double Qx = (float)TRASHVALUE;
 	
     POLYNOMIAL poly = new polynomial;
     zero_polynomial(poly);
@@ -95,6 +97,7 @@ void Menu()
     int nextstep, preChoice= -1;
     int notStart = 0;
 
+    bool choice[2] = {false,false};
     MENU: 
 	system("cls");             
 	userChoice = console();
@@ -106,26 +109,26 @@ void Menu()
         {
             INPUTMANUALLY:
             system("cls");
-            inputMatrixManually(matrix, size);
-            cin.ignore(1000 , '\n');
-            SavedValidMatrices(matrix,size,valid_matrix,size1);
-            if (valid_matrix[0][0] == (float)TRASHVALUE)
-                cout << "Bạn chưa nhập ma trận!" << endl;
-            else if (valid_matrix[0][0] != (float)TRASHVALUE)
+            if (valid_matrix[0][0] != (float)TRASHVALUE)
             {
                 cout << "Đặt lại các giá trị đã tính của ma trận cũ khi nhập vào ma trận mới" << endl;
                 valid_matrix[0][0]=(float)TRASHVALUE;
                 triangle_matrix[0][0]=(float)TRASHVALUE;
                 zero_polynomial(poly);
                 resVector[0]=(float)TRASHVALUE;
+                choice[0] = choice[1] = 0;
             }
+            inputMatrixManually(matrix, size);
+            cin.ignore(1000 , '\n');
+            SavedValidMatrices(matrix,size,valid_matrix,size1);
+            if (valid_matrix[0][0] == (float)TRASHVALUE)
+                cout << "Bạn chưa nhập ma trận!" << endl;
             else 
             {
                 cout << endl << "Ma trận hệ số :" << endl;
                 printMatrix(valid_matrix,size1);
             }
             nextstep = Continue();
-            if (nextstep == 1) goto INPUTMANUALLY;
             if (nextstep == 2) goto MENU;
             break;
         }
@@ -140,6 +143,7 @@ void Menu()
                 triangle_matrix[0][0]=(float)TRASHVALUE;
                 zero_polynomial(poly);
                 resVector[0]=(float)TRASHVALUE;
+                choice[0] = choice[1] = 0;
             }
             cout << "Nhập tên file / đường dẫn trực tiếp chỉ đến file : ";
             getline(cin, fileName);
@@ -175,7 +179,6 @@ void Menu()
                 }
             }
             nextstep = Continue();
-            if (nextstep == 1) goto READFILE;
             if (nextstep == 2) goto MENU;
             break;
         }
@@ -199,63 +202,76 @@ void Menu()
             {
                 cout << "Ma trận tam giác: " << endl;
                 printMatrix(triangle_matrix,size2);
+                cout << endl;
+            }
+            if (SolveTriangleMatrix(triangle_matrix, size2,resVector) == 0)
+            {
+                cout << "Hệ phương trình vô số nghiệm!" << endl;
+            }
+            else if (SolveTriangleMatrix(triangle_matrix, size2,resVector) == 2)
+                cout << "Hệ phương trình vô nghiệm" << endl;
+            else
+            {
+                cout << "Vector nghiệm :" << endl;
+                for (int i =0 ; i <size1; i++ )
+                    cout << setw(8) << setprecision(3) << resVector[i] << " ";
+                cout << endl;
             }
             Sleep(3000);
-            if (notStart)
+            if (notStart--)
             {
-                cout << "Nhấn phím Enter để tiếp tục";
-                cin.get();
-                goto SolveTriangleMatrix;
-            }
-            nextstep = Continue();
-            if (nextstep == 1) goto GEI;
-            if (nextstep == 2) goto MENU;
-            break;
-        }
-        // Add code to make it shows the details transformations and shows result
-        case 4:
-        {
-            notStart = 0;
-            SolveTriangleMatrix:
-            system("cls");
-            if (triangle_matrix[0][0] == (float)TRASHVALUE)
-            {
-                cout << "Bạn chưa biến đổi ma trận tam giác để giải" << endl;
-                notStart++;
-                Sleep(3000);
-                goto GEI;
-            }
-            else 
-            {
-                if (SolveTriangleMatrix(triangle_matrix, size2,resVector) == 0)
-                {
-                    cout << "Hệ phương trình vô số nghiệm!" << endl;
-                }
-                else if (SolveTriangleMatrix(triangle_matrix, size2,resVector) == 2)
-                    cout << "Hệ phương trình vô nghiệm" << endl;
-                else
-                {
-                    cout << "Đã giải ma trận thành công !" << endl;
-                    cout << endl << "Vector nghiệm :" << endl;
-                    for (int i =0 ; i <size1; i++ )
-                        cout << setw(8) << setprecision(3) << resVector[i] << " ";
-                    cout << endl;
-                }
-            }
-            Sleep(3000);
-            if (notStart)
-            {   
                 cout << "Nhấn phím Enter để tiếp tục";
                 cin.get();
                 goto PRINTPOLYNOMIAL;
             }
-            cout << "Nhấn Enter để quay lại Menu" << endl;
-            cin.ignore(1000 , '\n');
-            cin.get();
-            goto MENU;
+            nextstep = Continue();
+            if (nextstep == 2) goto MENU;
             break;
         }
-        case 5:
+        // Add code to make it shows the details transformations and shows result
+        // case 4:
+        // {
+        //     notStart = 0;
+        //     SolveTriangleMatrix:
+        //     system("cls");
+        //     if (triangle_matrix[0][0] == (float)TRASHVALUE)
+        //     {
+        //         cout << "Bạn chưa biến đổi ma trận tam giác để giải" << endl;
+        //         notStart++;
+        //         Sleep(3000);
+        //         goto GEI;
+        //     }
+        //     else 
+        //     {
+        //         if (SolveTriangleMatrix(triangle_matrix, size2,resVector) == 0)
+        //         {
+        //             cout << "Hệ phương trình vô số nghiệm!" << endl;
+        //         }
+        //         else if (SolveTriangleMatrix(triangle_matrix, size2,resVector) == 2)
+        //             cout << "Hệ phương trình vô nghiệm" << endl;
+        //         else
+        //         {
+        //             cout << "Đã giải ma trận thành công !" << endl;
+        //             cout << endl << "Vector nghiệm :" << endl;
+        //             for (int i =0 ; i <size1; i++ )
+        //                 cout << setw(8) << setprecision(3) << resVector[i] << " ";
+        //             cout << endl;
+        //         }
+        //     }
+        //     Sleep(3000);
+        //     if (notStart)
+        //     {   
+        //         cout << "Nhấn phím Enter để tiếp tục";
+        //         cin.get();
+        //         goto PRINTPOLYNOMIAL;
+        //     }
+        //     cout << "Nhấn Enter để quay lại Menu" << endl;
+        //     cin.ignore(1000 , '\n');
+        //     cin.get();
+        //     goto MENU;
+        //     break;
+        // }
+        case 4:
         {
             notStart = 0;
             PRINTPOLYNOMIAL:
@@ -265,7 +281,7 @@ void Menu()
                 cout << "Bạn chưa nhập vào ma trận hợp lệ" << endl;
                 notStart++;
                 Sleep(3000);
-                goto SolveTriangleMatrix;
+                goto GEI;
             }
             else
             {    
@@ -278,22 +294,22 @@ void Menu()
                 cout << endl;
             }
             Sleep(3000);
-            if (notStart)
+            if (notStart--)
             {   
                 cout << "Nhấn phím Enter để tiếp tục";
                 cin.get();
                 goto CalculateQx;
             }
             nextstep = Continue();
-            if (nextstep == 1) goto PRINTPOLYNOMIAL;
             if (nextstep == 2) goto MENU;
             break;
         }
-        case 6:
+        case 5:
         {
             notStart = 0;
             CalculateQx:
             system("cls");
+            Qx = 0;
             if (resVector[0] == (float)TRASHVALUE)
             {
                 if (triangle_matrix[0][0] != (float)TRASHVALUE)
@@ -313,7 +329,6 @@ void Menu()
             }
             else
             {
-                Qx = 0;
                 for (i = size1-1; i>=0; i--)
                 {
                     Qx += CalculatePx(poly,resVector[i]);
@@ -327,9 +342,123 @@ void Menu()
             goto MENU;
             break;
         }
-        case 7:
+        case 6:
         {
-            
+            userChoice=-1;
+            while (userChoice)
+            {
+                system("cls");
+                cout << "╔═══════════════════════════════════════════╗" << endl;
+                cout << "║                Lưu vào file               ║" << endl;
+                cout << "╠═══════════════════════════════╦═══════════╣" << endl;
+                cout << "║ 1.Giải phương trình và nghiệm ║   ";
+                if (choice[0]) 
+                cout << "Đã lưu" ;
+                else cout << "      ";
+                cout <<"  ║"<< endl;
+                cout << "╠═══════════════════════════════╬═══════════╣" << endl;
+                cout << "║ 2.Xử lí số liệu của ma trận   ║   ";
+                if (choice[1]) 
+                cout << "Đã lưu" ;
+                else cout << "      ";
+                cout <<"  ║"<< endl;
+                cout << "╚═══════════════════════════════╩═══════════╝" << endl;
+                cout << "Nhập lựa chọn: ";
+                userChoice = savechoice();
+                switch (userChoice)
+                {
+                    case 1:
+                    {
+                        if (resVector[0] == (float)TRASHVALUE)
+                        {   
+                            if (triangle_matrix[0][0]==(float)TRASHVALUE)
+                            {
+                                if (valid_matrix[0][0]==(float)TRASHVALUE)
+                                    cout << endl << "Chưa nhập ma trận mới để lưu, không thể tự động lưu ma trận mặc định" << endl;
+                                cout << endl << "Chưa biến đổi ma trận và giải nghiệm" << endl;
+                            }
+                            else 
+                            {
+                                if (SolveTriangleMatrix(triangle_matrix, size2,resVector) == 0)
+                                {
+                                    saveMatrixToFile(valid_matrix,size1,"result.txt",0);
+                                    saveMatrixToFile(triangle_matrix,size2,"result.txt",1);
+                                    filesave.open("result.txt", ios :: out | ios :: app);
+                                    filesave << endl << "Hệ phương trình vô số nghiệm" << endl;
+                                    filesave.close();
+                                    choice[0]=true;
+                                }
+                                if (SolveTriangleMatrix(triangle_matrix, size2,resVector) == 2)
+                                {
+                                    saveMatrixToFile(valid_matrix,size1,"result.txt",0);
+                                    saveMatrixToFile(triangle_matrix,size2,"result.txt",1);
+                                    filesave.open("result.txt", ios :: out | ios :: app);
+                                    filesave << endl << "Hệ phương trình vô nghiệm" << endl;
+                                    filesave.close();
+                                    choice[0]=true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            saveMatrixToFile(valid_matrix,size1,"result.txt",0);
+                            saveMatrixToFile(triangle_matrix,size2,"result.txt",1);
+                            savepoly_resToFile(poly, resVector, size1, "result.txt",3);
+                            choice[0]=true;
+                        }
+                        break;
+                    }
+                    case 2:
+                    {
+                        if (Qx == 0)
+                        {
+                            if (poly->high_power == 0)
+                            {
+                                if (triangle_matrix[0][0]==(float)TRASHVALUE)
+                                {
+                                    if (valid_matrix[0][0]==(float)TRASHVALUE)
+                                        cout << endl << "Chưa nhập ma trận để xử lí số liệu, không sử dụng số liệu từ ma trận mặc định" << endl;
+                                    cout << endl << "Chưa biến đổi ma trận và giải nghiệm" << endl;
+                                }
+                            }
+                            else 
+                                {
+                                    if (SolveTriangleMatrix(triangle_matrix, size2,resVector) == 0)
+                                    {
+                                        savepoly_resToFile(poly, resVector, size1, "result.txt",2);
+                                        filesave.open("result.txt", ios :: out | ios :: app);
+                                        filesave << endl << "Không có nghiệm để tính Q(x)" << endl;
+                                        filesave.close();
+                                        choice[1]=true;
+                                    }
+                                    if (SolveTriangleMatrix(triangle_matrix, size2,resVector) == 2)
+                                    {
+                                        savepoly_resToFile(poly, resVector, size1, "result.txt",2);
+                                        filesave.open("result.txt", ios :: out | ios :: app);
+                                        filesave << endl << "Không có nghiệm để tính Q(x)" << endl;
+                                        filesave.close();
+                                        choice[1]=true;
+                                    }
+                                }
+                        }
+                        else
+                        {
+                            if (Qx != (float)TRASHVALUE)
+                            {   
+                                savepoly_resToFile(poly, resVector, size1, "result.txt",2);
+                                savepoly_resToFile(poly, resVector, size1, "result.txt",3); 
+                                choice[1]=true;
+                            }
+                            else 
+                                cout << "Chưa tính Q(x)";
+                        }
+                        break;
+                    }
+                    default:
+                        goto MENU;
+                }
+                cin.ignore(1000 , '\n');
+            }
         }
         default:
             break;
@@ -340,14 +469,26 @@ void Menu()
 
 int Continue() 
 {
-	cout << endl << "Nhập y để lặp lại bước trên!" << endl << "Nhập b để quay lại menu!" ;
+	cout << endl << "Nhập b để quay lại menu!" ;
     cout << endl << "Nhập phím bất kỳ để kết thúc chương trình!" << endl << "Nhập : ";
 	char input;
     input = getchar();
     cin.ignore(1000 , '\n');
-	if (input == 'y')
-		return 1;
 	if (input == 'b')
+		return 2;
+    return 0;
+}
+
+int savechoice() 
+{
+	cout << endl << "Nhập 1 để lưu lựa chọn 1!" << endl << "Nhập 2 để lưu lựa chọn 2!" ;
+    cout << endl << "Nhập phím bất kỳ để quay về menu!" << endl << "Nhập : ";
+	char input;
+    input = getchar();
+    cin.ignore(1000 , '\n');
+	if (input == '1')
+		return 1;
+	if (input == '2')
 		return 2;
     return 0;
 }
