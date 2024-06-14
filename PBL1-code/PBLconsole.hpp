@@ -276,7 +276,7 @@ void Menu()
             notStart = 0;
             PRINTPOLYNOMIAL:
             system("cls");
-            if (triangle_matrix[0][0] == (float)TRASHVALUE)
+            if (valid_matrix[0][0] == (float)TRASHVALUE)
             {    
                 cout << "Bạn chưa nhập vào ma trận hợp lệ" << endl;
                 notStart++;
