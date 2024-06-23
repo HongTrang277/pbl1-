@@ -16,12 +16,13 @@
 
 # Tổ chức chương trình 
 Chương trình tổ chức một menu với 6 chức năng:
-  -Nhập ma trận bằng tay: Người dùng sẽ nhập ma trận, và sau khi nhập xong sẽ hiện lên ma trận vừa nhập.
-  -Đọc ma trận từ file: Chương trình sẽ kiểm tra tính hợp lệ của dữ liệu bao gồm kiểm tra có chứa ký tự chữ cái, có chứa nhiều hơn một dấu chấm trong một số, và kiểm tra sự đồng nhất về kích thước của các hàng trong ma trận. Nếu không thỏa mãn, nó trả về một mã lỗi tương ứngn ngược lại, nó trả về mã thành công.
-  -Biến đổi ma trận và giải nghiệm: Sau khi biến đổi ma trận về ma trận tam giác trên, sẽ giải ma trận tam giác và xuất ra vecto nghiệm.
-  -In ra đau thức P(x): Các hệ số của đa thức được tính bằng cách tổng các cột. Chương trình sẽ xử lý các trường hợp hệ số tự do, nếu hệ số của x là số 1, nếu số mũ là số 1 và dấu “+” không được hiển thị nếu đó là bậc cao nhất. 
-  -Tính Q(x)= SUM(p(xi)) : Sử dụng vecto nghiệm để thế vào biểu thức và cộng các giá trị lại sẽ được Q(x).
-Lưu dữ liệu vào file: Có thể lưu các bước giải hệ phương trình và vecto nghiệm. Lưu các kết quả của các đa thức vừa tính. Nếu lưu thành công, sẽ thông báo hiển thị “Đã lưu”. 
+
+  -  Nhập ma trận bằng tay: Người dùng sẽ nhập ma trận, và sau khi nhập xong sẽ hiện lên ma trận vừa nhập.
+  -  Đọc ma trận từ file: Chương trình sẽ kiểm tra tính hợp lệ của dữ liệu bao gồm kiểm tra có chứa ký tự chữ cái, có chứa nhiều hơn một dấu chấm trong một số, và kiểm tra sự đồng nhất về kích thước của các hàng trong ma trận. Nếu không thỏa mãn, nó trả về một mã lỗi tương ứngn ngược lại, nó trả về mã thành công.
+  -  Biến đổi ma trận và giải nghiệm: Sau khi biến đổi ma trận về ma trận tam giác trên, sẽ giải ma trận tam giác và xuất ra vecto nghiệm.
+  -  In ra đau thức P(x): Các hệ số của đa thức được tính bằng cách tổng các cột. Chương trình sẽ xử lý các trường hợp hệ số tự do, nếu hệ số của x là số 1, nếu số mũ là số 1 và dấu “+” không được hiển thị nếu đó là bậc cao nhất.
+  -  Tính Q(x)= SUM(p(xi)) : Sử dụng vecto nghiệm để thế vào biểu thức và cộng các giá trị lại sẽ được Q(x).
+  -  Lưu dữ liệu vào file: Có thể lưu các bước giải hệ phương trình và vecto nghiệm. Lưu các kết quả của các đa thức vừa tính. Nếu lưu thành công, sẽ thông báo hiển thị “Đã lưu”. 
 
 
 
