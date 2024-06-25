@@ -13,6 +13,14 @@ typedef struct polynomial
     int coeff_array[MAX_SIZE];
 } *POLYNOMIAL;
 
+
+/*
+Khởi tạo con trỏ coeff_ptr trỏ tới mảng coeff_array của đa thức poly.
+Lặp qua từng cột của ma trận.
+Đặt giá trị ban đầu của tổng cột hiện tại là 0.
+Lặp qua từng hàng của cột hiện tại, cộng giá trị của từng phần tử vào tổng cột.
+Lưu kết quả tổng cột vào mảng coeff_array của đa thức poly.
+*/
 void SumOfCols(float matrix[][MAX_SIZE], POLYNOMIAL poly, int &size)
 {
     int *coeff_ptr = poly->coeff_array;
