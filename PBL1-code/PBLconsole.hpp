@@ -446,7 +446,10 @@ void Menu()
                             if (Qx != (float)TRASHVALUE)
                             {   
                                 savepoly_resToFile(poly, resVector, size1, "result.txt",2);
-                                savepoly_resToFile(poly, resVector, size1, "result.txt",3); 
+                                filesave.open("result.txt", ios :: out | ios :: app);
+                                filesave << endl << "Q(x):" << endl;
+                                filesave << fixed << setw(15) << setprecision(3) << Qx << endl;
+                                filesave.close();
                                 choice[1]=true;
                             }
                             else 
